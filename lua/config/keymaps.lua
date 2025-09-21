@@ -130,6 +130,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("<leader>cs", require("snacks").picker.lsp_workspace_symbols, "Workspace Symbols")
     map("<leader>cn", vim.lsp.buf.rename, "Reame")
     map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
+    map("<leader>cf", vim.lsp.buf.format, "Format")
 
     map("K", function()
       vim.lsp.buf.hover({ border = "rounded" })
@@ -168,4 +169,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Mapeo de teclas para la navegación de diagnósticos
+-- Navegar sugerencias con Tab y Shift-Tab
+vim.keymap.set("i", "<Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+end, { expr = true, noremap = true })
+
+vim.keymap.set("i", "<S-Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+end, { expr = true, noremap = true })
+
+-- Confirmar con Enter
+vim.keymap.set("i", "<CR>", function()
+  if vim.fn.pumvisible() == 1 then
+    return "<C-y>"
+  end
+  return "<CR>"
+end, { expr = true, noremap = true })
