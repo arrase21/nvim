@@ -1,10 +1,10 @@
-return{
-  "folke/which-key.nvim",
-  event = "VeryLazy",
-  opts_extend = { "spec" },
-  opts = {
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+
+later(function()
+  add("folke/which-key.nvim")
+
+  require("which-key").setup({
     preset = "helix",
-    defaults = {},
     spec = {
       {
         mode = { "n", "v" },
@@ -39,33 +39,17 @@ return{
             return require("which-key.extras").expand.win()
           end,
         },
-        -- better descriptions
         { "gx", desc = "Open with system app" },
       },
     },
-  },
-  keys = {
-    {
-      "<leader>?",
-      function()
-        require("which-key").show({ global = false })
-      end,
-      desc = "Buffer Keymaps (which-key)",
-    },
-    {
-      "<c-w><space>",
-      function()
-        require("which-key").show({ keys = "<c-w>", loop = true })
-      end,
-      desc = "Window Hydra Mode (which-key)",
-    },
-  },
-  config = function(_, opts)
-    local wk = require("which-key")
-    wk.setup(opts)
-    if not vim.tbl_isempty(opts.defaults) then
-      LazyVim.warn("which-key: opts.defaults is deprecated. Please use opts.spec instead.")
-      wk.register(opts.defaults)
-    end
-  end,
-}
+  })
+
+  -- Keymaps extra
+  vim.keymap.set("n", "<leader>?", function()
+    require("which-key").show({ global = false })
+  end, { desc = "Buffer Keymaps (which-key)" })
+
+  vim.keymap.set("n", "<c-w><space>", function()
+    require("which-key").show({ keys = "<c-w>", loop = true })
+  end, { desc = "Window Hydra Mode (which-key)" })
+end)

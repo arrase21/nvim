@@ -1,10 +1,10 @@
-return {
-  {
-    "folke/tokyonight.nvim",
-    priority = 1000,
-    config = function()
-      local transparent = true -- set to true if you would like to enable transparency
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+local now_if_args = vim.fn.argc(-1) > 0 and now or later
 
+now(function()
+add("folke/tokyonight.nvim")
+config = function()
+      local transparent = true -- set to true if you would like to enable transparency
       local bg = "#011628"
       local bg_dark = "#011423"
       local bg_search = "#0A64AC"
@@ -38,43 +38,6 @@ return {
           colors.fg_sidebar = fg_dark
         end,
       })
-    end,
-  },
-
-  -- {
-  --   "craftzdog/solarized-osaka.nvim",
-  --   lazy = true,
-  --   priority = 1000,
-  --   opts = function()
-  --     return {
-  --       transparent = true,
-  --     }
-  --   end,
-  -- },
-  -- {
-  --   "rebelot/kanagawa.nvim",
-  --   lazy = true,
-  --   priority = 1000,
-  --   opts = function()
-  --     return {
-  --       colors = {
-  --         theme = {
-  --           all = {
-  --             ui = {
-  --               bg_gutter = "none",
-  --               float = "none",
-  --               pmenu = {
-  --                 bg = "none",
-  --               },
-  --             },
-  --           },
-  --         },
-  --       },
-  --       undercurl = true,
-  --       transparent = true,
-  --       dimInactive = false,
-  --       terminalColors = true,
-  --     }
-  --   end,
-  -- },
-}
+end
+end)
+vim.cmd("colorscheme tokyonight")
