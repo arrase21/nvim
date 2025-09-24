@@ -1,4 +1,3 @@
-
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
@@ -114,7 +113,7 @@ map("n", "<leader>fb", "<Cmd>Pick buffers<CR>", { desc = "Find buffers" })
 map("n", "<leader>fg", "<Cmd>Pick grep_live<CR>", { desc = "Finf Grep" })
 
 -- picker
-map("n", "<leader>o", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Find Files" })
+map("n", "<leader>o", "<Cmd>lua MiniFiles.open()<CR>", { desc = "󰱼 Find Files" })
 -- lsp
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -190,4 +189,3 @@ map("i", "{", "{}<Left>")
 map("i", "\"", "\"\"<Left>")
 map("i", "'", "''<Left>")
 map("i", "`", "``<Left>")
-
