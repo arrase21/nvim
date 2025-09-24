@@ -22,9 +22,9 @@ end
 
 require('plugins.mason')
 require('plugins.mini')
--- require('plugins.codeium')
+require('plugins.debug')
 require('plugins.theme')
 require('plugins.lualine')
 require('plugins.folke')
 require('plugins.treesitter')
-require('plugins.which-key')
+-- require('plugins.which-key')

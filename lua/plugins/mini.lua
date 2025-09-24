@@ -27,20 +27,29 @@ later(function()
   end
 end)
 
-later(function() require('mini.diff').setup() end)
+later(function()
+  require('mini.diff').setup({
+    view = {
+      style = "sign",
+      signs = { add = '▒', change = '▒', delete = '消' },
+    }
+  })
+end)
 
-later(function() require('mini.files').setup({
-        mappings = {
-          go_in_plus = "<CR>",       -- Entrar y abrir en ventana reciente
-          synchronize = "<Leader>w", -- Remapear sincronización a <Leader>w
-        },
-        windows = {
-          preview = true,
-          width_focus = 30,
-          width_nofocus = 15,
-          width_preview = 85,
-        },
-}) end)
+later(function()
+  require('mini.files').setup({
+    mappings = {
+      go_in_plus = "<CR>",       -- Entrar y abrir en ventana reciente
+      synchronize = "<Leader>w", -- Remapear sincronización a <Leader>w
+    },
+    windows = {
+      preview = true,
+      width_focus = 30,
+      width_nofocus = 15,
+      width_preview = 85,
+    },
+  })
+end)
 
 later(function()
   add("Exafunction/codeium.vim")
@@ -102,8 +111,10 @@ later(function()
   -- Keymaps for Codeium (for ghost text and cycling suggestions)
   vim.keymap.set('i', '<C-g>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
   vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-  vim.keymap.set('i', '<C-[>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-  vim.keymap.set('i', '<C-]>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+  vim.keymap.set('i', '<C-[>', function() return vim.fn['codeium#CycleCompletions'](1) end,
+    { expr = true, silent = true })
+  vim.keymap.set('i', '<C-]>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+    { expr = true, silent = true })
 
   -- Ensure completeopt is set for popup menu
   vim.o.completeopt = 'menu,menuone,noselect'
@@ -116,9 +127,9 @@ end)
 --     return MiniCompletion.default_process_items(items, base, process_items_opts)
 --   end
 --   require('mini.completion').setup({
---     lsp_completion = { 
---       source_func = 'omnifunc', 
---       auto_setup = true, 
+--     lsp_completion = {
+--       source_func = 'omnifunc',
+--       auto_setup = true,
 --       process_items = process_items },
 --   })
 --
@@ -128,40 +139,53 @@ end)
 -- end)
 
 
--- later(function()
---   local miniclue = require('mini.clue')
---   miniclue.setup({
---     clues = {
---       Config.leader_group_clues,
---       miniclue.gen_clues.builtin_completion(),
---       miniclue.gen_clues.g(),
---       miniclue.gen_clues.marks(),
---       miniclue.gen_clues.registers(),
---       miniclue.gen_clues.windows({ submode_resize = true }),
---       miniclue.gen_clues.z(),
---     },
---     triggers = {
---       { mode = 'n', keys = '<Leader>' }, -- Leader triggers
---       { mode = 'x', keys = '<Leader>' },
---       { mode = 'n', keys = [[\]] },      -- mini.basics
---       { mode = 'n', keys = '[' },        -- mini.bracketed
---       { mode = 'n', keys = ']' },
---       { mode = 'x', keys = '[' },
---       { mode = 'x', keys = ']' },
---       { mode = 'i', keys = '<C-x>' },    -- Built-in completion
---       { mode = 'n', keys = 'g' },        -- `g` key
---       { mode = 'x', keys = 'g' },
---       { mode = 'n', keys = "'" },        -- Marks
---       { mode = 'n', keys = '`' },
---       { mode = 'x', keys = "'" },
---       { mode = 'x', keys = '`' },
---       { mode = 'n', keys = '"' },        -- Registers
---       { mode = 'x', keys = '"' },
---       { mode = 'i', keys = '<C-r>' },
---       { mode = 'c', keys = '<C-r>' },
---       { mode = 'n', keys = '<C-w>' },    -- Window commands
---       { mode = 'n', keys = 'z' },        -- `z` key
---       { mode = 'x', keys = 'z' },
---     },
---   })
--- end)
+later(function()
+  local miniclue = require('mini.clue')
+  miniclue.setup({
+    window = {
+      delay = 1,
+      scroll_down = '<C-d>',
+      scroll_up = '<C-u>',
+    },
+    clues = {
+      { mode = 'n', keys = '<Leader>c', desc = 'Coding' },
+      { mode = 'n', keys = '<Leader>b', desc = 'Buffers' },
+      { mode = 'n', keys = '<Leader>f', desc = 'Files' },
+      { mode = 'n', keys = '<Leader>q', desc = 'Quit/Session' },
+      { mode = 'n', keys = '<Leader>u', desc = 'UI/Toggles' },
+      { mode = 'n', keys = '<Leader>w', desc = 'Windows' },
+      { mode = 'n', keys = '<Leader>d', desc = 'Debug' },
+
+      Config.leader_group_clues,
+      miniclue.gen_clues.builtin_completion(),
+      miniclue.gen_clues.g(),
+      miniclue.gen_clues.marks(),
+      miniclue.gen_clues.registers(),
+      miniclue.gen_clues.windows({ submode_resize = true }),
+      miniclue.gen_clues.z(),
+    },
+    triggers = {
+      { mode = 'n', keys = '<Leader>' }, -- Leader triggers
+      { mode = 'x', keys = '<Leader>' },
+      { mode = 'n', keys = [[\]] },      -- mini.basics
+      { mode = 'n', keys = '[' },        -- mini.bracketed
+      { mode = 'n', keys = ']' },
+      { mode = 'x', keys = '[' },
+      { mode = 'x', keys = ']' },
+      { mode = 'i', keys = '<C-x>' }, -- Built-in completion
+      { mode = 'n', keys = 'g' },     -- `g` key
+      { mode = 'x', keys = 'g' },
+      { mode = 'n', keys = "'" },     -- Marks
+      { mode = 'n', keys = '`' },
+      { mode = 'x', keys = "'" },
+      { mode = 'x', keys = '`' },
+      { mode = 'n', keys = '"' }, -- Registers
+      { mode = 'x', keys = '"' },
+      { mode = 'i', keys = '<C-r>' },
+      { mode = 'c', keys = '<C-r>' },
+      { mode = 'n', keys = '<C-w>' }, -- Window commands
+      { mode = 'n', keys = 'z' },     -- `z` key
+      { mode = 'x', keys = 'z' },
+    },
+  })
+end)
