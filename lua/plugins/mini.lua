@@ -143,7 +143,7 @@ later(function()
   local miniclue = require('mini.clue')
   miniclue.setup({
     window = {
-      delay = 1,
+      delay = 100,
       scroll_down = '<C-d>',
       scroll_up = '<C-u>',
     },
