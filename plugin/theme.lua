@@ -2,6 +2,50 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local now_if_args = vim.fn.argc(-1) > 0 and now or later
 
 now(function()
+  add("https://github.com/vague-theme/vague.nvim")
+  require("vague").setup({
+    colors = {
+      bg = "none"
+    }
+  })
+  -- vim.cmd("colorscheme vague")
+end)
+
+now(function()
+  add("rebelot/kanagawa.nvim")
+  require('kanagawa').setup({
+    overrides = function(colors)
+      local theme = colors.theme
+      return {
+
+        NormalFloat = { bg = "none" },
+        FloatBorder = { bg = "none" },
+        FloatTitle = { bg = "none" },
+        NormalDark = { fg = "none", bg = "none" },
+        LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
+        MasonNormal = { bg = "none", fg = "none" },
+        -- Lualine = { bg = "none", fg = "none" },
+      }
+    end,
+    transparent = true,
+    colors = {
+      palette = {},
+      theme = {
+        all = {
+          ui = {
+            float = {
+              bg = "none",
+            },
+            bg_gutter = "none"
+          }
+        }
+      }
+    },
+  })
+  vim.cmd("colorscheme kanagawa-wave")
+end)
+
+now(function()
   add("folke/tokyonight.nvim")
   require("tokyonight").setup({ transparent = true }) --comentar si se desea transparente
 
@@ -39,7 +83,7 @@ now(function()
   --     colors.fg_sidebar = fg_dark
   --   end,
   -- })
-  vim.schedule(function()
-    vim.cmd("colorscheme tokyonight")
-  end)
+  -- vim.schedule(function()
+  -- vim.cmd("colorscheme tokyonight")
+  -- end)
 end)

@@ -3,10 +3,15 @@ local now_if_args = vim.fn.argc(-1) > 0 and now or later
 
 now(function()
 add("nvim-lualine/lualine.nvim")
+-- Eviline config for lualine
+-- Author: shadmansaleh
+-- Credit: glepnir
 local lualine = require('lualine')
 
+-- Color table for highlights
+-- stylua: ignore
 local colors = {
-  bg       = '#202328',
+  bg       = 'NONE',
   fg       = '#bbc2cf',
   yellow   = '#ECBE7B',
   cyan     = '#008080',
@@ -40,8 +45,8 @@ local config = {
     component_separators = '',
     section_separators = '',
     theme = {
-      normal = { c = { fg = colors.NONE, bg = colors.NONE } },
-      inactive = { c = { fg = colors.NONE, bg = colors.NONE } },
+      normal = { c = { fg = colors.fg, bg = 'NONE' } },
+      inactive = { c = { fg = colors.fg, bg = 'NONE'} },
     },
   },
   sections = {
@@ -216,4 +221,5 @@ ins_right {
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)
+
 end)

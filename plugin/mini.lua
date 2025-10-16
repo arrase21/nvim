@@ -2,7 +2,7 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 add({ name = 'mini.nvim', checkout = 'HEAD' })
 
-now(function() vim.cmd('colorscheme miniwinter') end)
+-- now(function() vim.cmd('colorscheme miniwinter') end)
 
 now(function()
   require('mini.icons').setup({
@@ -125,13 +125,6 @@ later(function() require('mini.git').setup() end)
 
 later(function() require('mini.indentscope').setup() end)
 
-later(function()
-  require('mini.keymap').setup()
-  MiniKeymap.map_multistep('i', '<Tab>', { 'pmenu_next' })
-  MiniKeymap.map_multistep('i', '<S-Tab>', { 'pmenu_prev' })
-  MiniKeymap.map_multistep('i', '<CR>', { 'pmenu_accept', 'minipairs_cr' })
-  MiniKeymap.map_multistep('i', '<BS>', { 'minipairs_bs' })
-end)
 
 later(function() require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = false } }) end)
 

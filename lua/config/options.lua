@@ -1,5 +1,6 @@
 -- stylua: ignore start
 -- General ====================================================================
+
 vim.g.mapleader = ' ' -- Use <Space> as a leader key
 
 vim.o.mouse        = 'a'            -- Enable mouse
@@ -22,7 +23,7 @@ vim.o.colorcolumn    = '+1'
 vim.o.cursorline     = true
 vim.o.cursorlineopt  = 'screenline,number'
 vim.o.linebreak      = true
-vim.o.list           = true
+vim.o.list           =false 
 vim.o.number         = true
 vim.o.relativenumber = true
 vim.o.pumheight      = 15
@@ -45,8 +46,7 @@ vim.o.wildmode       = 'longest:full,full'
 
 -- Special UI symbols
 vim.o.fillchars = 'eob: ,fold:╌'
-vim.o.listchars = 'extends:…,nbsp:␣,precedes:…,tab:> '
-
+vim.o.listchars = "tab:→ ,trail:·,extends:…,precedes:…"
 -- Folds
 -- vim.o.foldlevel   = 1
 -- vim.o.foldmethod  = 'indent'
@@ -61,7 +61,7 @@ if vim.fn.has('nvim-0.10') == 1 then
 end
 
 if vim.fn.has('nvim-0.11') == 1 then
-  vim.o.winborder = 'double'
+  vim.o.winborder = 'rounded'
   vim.o.messagesopt = 'wait:500,history:500'
   local make_set_messagesopt = function(value)
     return vim.schedule_wrap(function() vim.o.messagesopt = value end)
@@ -74,7 +74,7 @@ if vim.fn.has('nvim-0.12') == 1 then
   vim.o.pummaxwidth = 100
   vim.o.completefuzzycollect = 'keyword,files,whole_line'
   vim.o.completetimeout = 100
-  vim.o.pumborder = 'single'
+  vim.o.pumborder = 'rounded'
   require('vim._extui').enable({ enable = true })
 end
 

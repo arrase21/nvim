@@ -214,9 +214,17 @@ S.setup_windows = function()
 
   --stylua: ignore start
   local win_options = {
-    colorcolumn = '', cursorline = true, cursorcolumn = true, fillchars = 'eob: ',
-    foldcolumn = '0', foldlevel = 999,   number = false,      relativenumber = false,
-    spell = false,    signcolumn = 'no', wrap = false,
+    colorcolumn = '',
+    cursorline = true,
+    cursorcolumn = true,
+    fillchars = 'eob: ',
+    foldcolumn = '0',
+    foldlevel = 999,
+    number = false,
+    relativenumber = false,
+    spell = false,
+    signcolumn = 'no',
+    wrap = false,
   }
   for name, value in pairs(win_options) do
     vim.api.nvim_win_set_option(S.win_id_text, name, value)
@@ -226,9 +234,12 @@ S.setup_windows = function()
   -- Set up behavior
   for _, buf_id in ipairs({ S.buf_id_text, S.buf_id_attr }) do
     vim.api.nvim_buf_set_keymap(buf_id, 'n', 'q', ':tabclose!<CR>', { noremap = true })
-    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-d>', '<Cmd>lua Config.minitest_screenshots.delete_current()<CR>', { noremap = true })
-    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-n>', '<Cmd>lua Config.minitest_screenshots.show_next()<CR>', { noremap = true })
-    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-p>', '<Cmd>lua Config.minitest_screenshots.show_prev()<CR>', { noremap = true })
+    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-d>', '<Cmd>lua Config.minitest_screenshots.delete_current()<CR>',
+      { noremap = true })
+    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-n>', '<Cmd>lua Config.minitest_screenshots.show_next()<CR>',
+      { noremap = true })
+    vim.api.nvim_buf_set_keymap(buf_id, 'n', '<C-p>', '<Cmd>lua Config.minitest_screenshots.show_prev()<CR>',
+      { noremap = true })
   end
   --stylua: ignore end
 end
@@ -325,5 +336,37 @@ Config.new_autocmd("BufReadPost", "*", function(event)
     pcall(vim.api.nvim_win_set_cursor, 0, mark)
   end
 end, "Restore last cursor position")
+
+
+-- Autoformat on save (LSP)
+Config.lsp_autoformat = {}
+
+-- Define helper for setting up buffer-specific autocmd
+Config.lsp_autoformat.buffer_setup = function(bufnr)
+  local group = 'lsp_autoformat'
+  vim.api.nvim_create_augroup(group, { clear = false })
+  vim.api.nvim_clear_autocmds({ group = group, buffer = bufnr })
+
+  vim.api.nvim_create_autocmd('BufWritePre', {
+    buffer = bufnr,
+    group = group,
+    desc = 'LSP format on save',
+    callback = function()
+      vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
+    end,
+  })
+end
+
+-- Attach only when LSP client supports formatting
+Config.new_autocmd('LspAttach', '*', function(event)
+  local id = vim.tbl_get(event, 'data', 'client_id')
+  local client = id and vim.lsp.get_client_by_id(id)
+  if not client then return end
+
+  -- ✅ Nueva sintaxis compatible con Neovim >= 0.12
+  if client:supports_method('textDocument/formatting') then
+    Config.lsp_autoformat.buffer_setup(event.buf)
+  end
+end, 'Enable autoformat on save for buffers with LSP formatting support')
 
 Config.luals_unique_definition = function() return vim.lsp.buf.definition({ on_list = on_list }) end
