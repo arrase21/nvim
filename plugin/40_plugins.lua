@@ -37,28 +37,32 @@ now(function()
       }
     end,
   })
-  vim.cmd("colorscheme kanagawa-wave")
+  -- vim.cmd("colorscheme kanagawa-wave")
 end)
-now(function()
-  add("https://gitlab.com/motaz-shokry/gruvbox.nvim")
-  require("gruvbox").setup({
-    highlight_groups = {
-      Visual = { reverse = true },
-    },
-    palette = {
-      hard = {
-        bg_main = "#1D2021",
-      },
-    },
-  })
-  vim.cmd('colorscheme gruvbox-hard')
+now(function ()
+ add("morhetz/gruvbox")
+  vim.cmd('colorscheme gruvbox')
 end)
+-- now(function()
+--   add("https://gitlab.com/motaz-shokry/gruvbox.nvim")
+--   require("gruvbox").setup({
+--     highlight_groups = {
+--       Visual = { reverse = true },
+--     },
+--     palette = {
+--       hard = {
+--         bg_main = "#1D2021",
+--       },
+--     },
+--   })
+--   vim.cmd('colorscheme gruvbox-hard')
+-- end)
 
-now(function()
-  add("folke/tokyonight.nvim")
-  require("tokyonight").setup({ transparent = true }) --comentar si se desea transparente
-  -- vim.cmd("colorscheme tokyonight")
-end)
+-- now(function()
+--   add("folke/tokyonight.nvim")
+--   require("tokyonight").setup({ transparent = true }) --comentar si se desea transparente
+--   -- vim.cmd("colorscheme tokyonight")
+-- end)
 
 -- ┌─────────────────────────┐
 -- │           DAP           │
@@ -137,3 +141,6 @@ later(function()
     },
   })
 end)
+
+
+later(function() add('https://github.com/rafamadriz/friendly-snippets') end)

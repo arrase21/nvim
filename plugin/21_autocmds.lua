@@ -18,12 +18,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function()
-    vim.diagnostic.open_float(nil, { focusable = false })
-  end,
-})
-
 Config.new_autocmd("BufReadPost", "*", function(event)
   local exclude = { "gitcommit" }
   local buf = event.buf
@@ -38,3 +32,24 @@ Config.new_autocmd("BufReadPost", "*", function(event)
   end
 end, "Restore last cursor position")
 
+
+-- Highlight del símbolo bajo el cursor via LSP
+vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+  desc = "LSP hover actions",
+  group = vim.api.nvim_create_augroup('LspCursorHold', { clear = true }),
+  callback = function()
+    vim.diagnostic.open_float(nil, { focusable = false })
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients > 0 then
+      vim.lsp.buf.document_highlight()
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+  desc = "Clear LSP references",
+  group = vim.api.nvim_create_augroup('LspCursorMoved', { clear = true }),
+  callback = function()
+    vim.lsp.buf.clear_references()
+  end,
+})
