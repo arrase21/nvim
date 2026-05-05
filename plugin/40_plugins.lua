@@ -40,7 +40,9 @@ now(function()
   -- vim.cmd("colorscheme kanagawa-wave")
 end)
 now(function ()
- add("morhetz/gruvbox")
+ add("arrase21/gruvbox")
+  vim.g.gruvbox_contrast_dark = "hard"
+  vim.o.background = "dark"
   vim.cmd('colorscheme gruvbox')
 end)
 -- now(function()

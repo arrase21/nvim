@@ -124,36 +124,19 @@ require("mini.starter").setup({
 
 
 -- Mini Statusline ================================================================================================
-local function get_color(group, attr)
-  local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-  local val = hl[attr]
-  if not val then return nil end
-  return string.format('#%06x', val)
-end
-
 local function set_hl()
-  local red    = get_color('DiagnosticError', 'fg')
-  local yellow = get_color('DiagnosticWarn',  'fg')
-  local blue   = get_color('DiagnosticInfo',  'fg')
-  local aqua   = get_color('DiagnosticHint',  'fg')
-  local green  = get_color('DiagnosticOk',    'fg')
-  local bg     = get_color('Normal',          'bg')
-  local fg     = get_color('Normal',          'fg')
-  local mid_bg = get_color('CursorLine',      'bg')  -- bg del bloque central
-  local sl_bg  = get_color('StatusLine',      'bg')  -- bg de la statusline
-
   for name, opts in pairs({
-    SLSepGreen  = { fg = green,   bg = sl_bg,  },
-    SLCapsGreen = { fg = bg,      bg = green,  bold = true },
-    SLInfo      = { fg = green,   bg = mid_bg, bold = true },
-    SLCaps      = { fg = bg,      bg = red,    bold = true },
-    SLFile      = { fg = fg,      bg = mid_bg, bold = true },
-    SLMid       = { fg = fg,      bg = mid_bg },
-    Err         = { fg = red,     bg = sl_bg  },
-    Warn        = { fg = yellow,  bg = sl_bg  },
-    Info        = { fg = blue,    bg = sl_bg  },
-    Hint        = { fg = aqua,    bg = sl_bg  },
-    SLGitBranch = { fg = fg,      bg = sl_bg,  bold = true },
+    SLSepGreen  = { fg = '#50FA7B', bg = 'none' },
+    SLCapsGreen = { fg = '#282c34', bg = '#50FA7B', bold = true },
+    SLInfo      = { fg = '#50FA7B', bg = '#2D2D4E', bold = true },
+    SLCaps      = { fg = '#282c34', bg = '#ec5f67', bold = true },
+    SLFile      = { fg = 'none', bg = '#2D2D4E', bold = true },
+    SLMid       = { fg = '#bbc2cf', bg = '#9A86FD' },
+    Err         = { fg = '#ec5f67', bg = 'none' },
+    Warn        = { fg = '#ECBE7B', bg = 'none' },
+    Info        = { fg = '#008080', bg = 'none' },
+    Hint        = { fg = '#05C3FF', bg = 'none' },
+    SLGitBranch = { fg = '#bbc2cf', bg = 'none', bold = true },
   }) do
     vim.api.nvim_set_hl(0, name, opts)
   end
