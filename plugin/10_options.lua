@@ -26,7 +26,6 @@ vim.o.linebreak      = true
 vim.o.list           = false
 vim.o.number         = true
 vim.o.relativenumber = true
-vim.o.pumblend       = 2
 vim.o.ruler          = false
 vim.o.shortmess      = 'CFOSWaco'
 vim.o.showmode       = false
