@@ -1,3 +1,15 @@
+-- ┌────────────────┐
+-- │ LSP Auto-Enable│
+-- └────────────────┘
+local lsp_files = vim.api.nvim_get_runtime_file('lsp/*.lua', true)
+local configs = {}
+for _, path in ipairs(lsp_files) do
+  table.insert(configs, vim.fn.fnamemodify(path, ':t:r'))
+end
+if #configs > 0 then
+  vim.lsp.enable(configs)
+end
+
 local mini_path = vim.fn.stdpath('data') .. '/site/pack/deps/start/mini.nvim'
 if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
@@ -16,7 +28,6 @@ _G.Config.new_autocmd = function(event, pattern, callback, desc)
   vim.api.nvim_create_autocmd(event, opts)
 end
 
-require('config.options')
-require('config.keymaps')
-require('config.autocmds')
--- require('config.diagnostics')
+vim.g.mapleader = " "
+require("preview.events").setup()
+require("fzf")
