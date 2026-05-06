@@ -53,3 +53,12 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
     vim.lsp.buf.clear_references()
   end,
 })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  desc = "Actions before saving",
+  group = vim.api.nvim_create_augroup("BeforeSave", { clear = true }),
+  callback = function()
+    -- Ejemplo: formatear con LSP
+    vim.lsp.buf.format({ async = false })
+  end,
+})

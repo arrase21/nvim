@@ -39,32 +39,20 @@ now(function()
   })
   -- vim.cmd("colorscheme kanagawa-wave")
 end)
-now(function ()
- add("arrase21/gruvbox")
+now(function()
+  add("arrase21/gruvbox")
   vim.g.gruvbox_contrast_dark = "hard"
   vim.o.background = "dark"
   vim.cmd('colorscheme gruvbox')
 end)
--- now(function()
---   add("https://gitlab.com/motaz-shokry/gruvbox.nvim")
---   require("gruvbox").setup({
---     highlight_groups = {
---       Visual = { reverse = true },
---     },
---     palette = {
---       hard = {
---         bg_main = "#1D2021",
---       },
---     },
---   })
---   vim.cmd('colorscheme gruvbox-hard')
--- end)
-
--- now(function()
---   add("folke/tokyonight.nvim")
---   require("tokyonight").setup({ transparent = true }) --comentar si se desea transparente
---   -- vim.cmd("colorscheme tokyonight")
--- end)
+--Dracula
+now_if_args(function()
+  add("arrase21/dracula.nvim")
+  require("dracula").setup({
+    transparent_bg = true
+  })
+  -- vim.cmd('colorscheme dracula')
+end)
 
 -- ┌─────────────────────────┐
 -- │           DAP           │
@@ -130,17 +118,57 @@ end)
 later(function()
   add("nvim-tree/nvim-tree.lua")
   require("nvim-tree").setup({
-    actions = {
-      open_file = {
-        quit_on_open = true,
-      },
-    },
     diagnostics = {
       enable = true,
       icons = {
         error = "💀",
       }
     },
+    actions = {
+      open_file = {
+        quit_on_open = true,
+      },
+    },
+    renderer = {
+      icons = {
+        show = {
+          hidden = true
+        },
+        git_placement = "after",
+        symlink_arrow = " -> ",
+        glyphs = {
+          folder = {
+            arrow_closed = " ",
+            arrow_open = " ",
+            default = "",
+            open = "",
+            empty = "",
+            empty_open = "",
+            symlink = "",
+            symlink_open = ""
+          },
+          default = "󱓻",
+          symlink = "󱓻",
+          bookmark = "",
+          modified = "",
+          hidden = "󱙝",
+          git = {
+            unstaged = "×",
+            staged = "",
+            unmerged = "󰧾",
+            untracked = "",
+            renamed = "",
+            deleted = "",
+            ignored = "∅"
+          }
+        }
+      }
+    },
+    filters = {
+      git_ignored = false
+    },
+    hijack_cursor = true,
+    sync_root_with_cwd = true
   })
 end)
 
