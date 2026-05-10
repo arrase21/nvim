@@ -29,5 +29,4 @@ _G.Config.new_autocmd = function(event, pattern, callback, desc)
 end
 
 vim.g.mapleader = " "
-require("preview.events").setup()
 require("fzf")

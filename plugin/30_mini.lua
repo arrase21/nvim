@@ -58,7 +58,16 @@ later(function() require('mini.git').setup() end)
 
 later(function() require('mini.indentscope').setup() end)
 
-later(function() require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = false } }) end)
+later(function()
+  require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = false } })
+  vim.keymap.set('i', '<CR>', function()
+    if vim.fn.pumvisible() == 1 then
+      return vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
+    end
+    return require('mini.pairs').cr()
+  end, { expr = true })
+end)
+-- later(function() require('mini.pairs').setup() end)
 
 later(function() require('mini.pick').setup() end)
 
@@ -74,7 +83,7 @@ now(function()
   local miniclue = require('mini.clue')
   miniclue.setup({
     window = {
-      delay = 100,
+      delay = 10,
     },
     clues = {
       Config.leader_group_clues,
@@ -89,39 +98,41 @@ now(function()
 end)
 
 -- Mini Starter ====================================================================================================
-Mvim_starter_custom = function()
-  return {
-    { name = "Quit Neovim", action = "qa",                                                    section = "", },
-    { name = "Old Files",   action = function() require("mini.extra").pickers.oldfiles() end, section = "" },
-  }
-end
+-- Mvim_starter_custom = function()
+--   return {
+--     { name = "Quit Neovim", action = "qa",                                                    section = "", },
+--     { name = "Old Files",   action = function() require("mini.extra").pickers.oldfiles() end, section = "" },
+--     { name = "sessions",    action = function() require("mini.sessions").select() end,        section = "" },
+--   }
+-- end
 require("mini.starter").setup({
   autoopen = true,
   items = {
-    Mvim_starter_custom(),
-    require("mini.starter").sections.recent_files(4, false, false),
-    require("mini.starter").sections.sessions(4, false, false),
-    -- require("mini.starter").sections.quit(3, false, false),
+    { name = "Quit Neovim", action = "qa",                                                    section = "", },
+    { name = "Old Files",   action = function() require("mini.extra").pickers.oldfiles() end, section = "" },
+    { name = "sessions",    action = function() require("mini.sessions").select() end,        section = "" },
+    { name = "Find Files",  action = function() require("fzf").files() end,                   section = "" },
+    { name = "Rip Grep",    action = function() require("fzf").grep() end,                    section = "" },
   },
   header = function()
     local image = [[
-    ┌─────────────────────────────────────────────────────┐
-    │                                                     │
-    │    █████╗ ██████╗ ██████╗  █████╗ ███████╗███████╗  │
-    │   ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝  │
-    │   ███████║██████╔╝██████╔╝███████║███████╗█████╗    │
-    │   ██╔══██║██╔══██╗██╔══██╗██╔══██║╚════██║██╔══╝    │
-    │   ██║  ██║██║  ██║██║  ██║██║  ██║███████║███████╗  │
-    │   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝  │
-    │                       ARRASE                        │
-    └─────────────────────────────────────────────────────┘
-    ]]
+   ┌────────────────────────┐
+   │                        │
+   │   ▞▀▖▛▀▖▛▀▖▞▀▖▞▀▖▛▀▘   │
+   │   ▙▄▌▙▄▘▙▄▘▙▄▌▚▄ ▙▄    │
+   │   ▌ ▌▌▚ ▌▚ ▌ ▌▖ ▌▌     │
+   │   ▘ ▘▘ ▘▘ ▘▘ ▘▝▀ ▀▀    │
+   └────────────────────────┘
+   ]]
     return image
   end,
   footer = "",
   query_updater = false,
 })
 
+-- now(function()
+--   require('mini.statusline').setup()
+-- end)
 
 -- Mini Statusline ================================================================================================
 local function set_hl()

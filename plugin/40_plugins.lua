@@ -172,5 +172,8 @@ later(function()
   })
 end)
 
-
-later(function() add('https://github.com/rafamadriz/friendly-snippets') end)
+now(function()
+  add("arrase21/mini-pick-preview.nvim")
+  require("mini-pick-preview").setup()
+end)
+-- later(function() add('https://github.com/rafamadriz/friendly-snippets') end)

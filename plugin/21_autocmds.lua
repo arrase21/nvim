@@ -9,6 +9,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     })
   end,
 })
+
 -- 3. Fix Format Options (Con grupo para evitar leaks)
 vim.api.nvim_create_autocmd("FileType", {
   desc = "Disable automatic comment continuation",
@@ -54,11 +55,98 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
   end,
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  desc = "Actions before saving",
-  group = vim.api.nvim_create_augroup("BeforeSave", { clear = true }),
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   desc = "Actions before saving",
+--   group = vim.api.nvim_create_augroup("BeforeSave", { clear = true }),
+--   callback = function()
+--     vim.lsp.buf.format({ async = false })
+--   end,
+-- })
+
+
+
+-- local format_group =
+--     vim.api.nvim_create_augroup('lsp_autoformat', { clear = false })
+--
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   callback = function(event)
+--     local client = vim.lsp.get_client_by_id(event.data.client_id)
+--
+--     if not client then
+--       return
+--     end
+--
+--     if not client:supports_method('textDocument/formatting') then
+--       return
+--     end
+--     vim.lsp.buf.format({
+--       bufnr = event.buf,
+--       async = false,
+--       timeout_ms = 800,
+--       filter = function(client)
+--         return client.name ~= "ts_ls"
+--       end,
+--     })
+--     vim.api.nvim_clear_autocmds({
+--       group = format_group,
+--       buffer = event.buf,
+--     })
+--
+--     vim.api.nvim_create_autocmd('BufWritePre', {
+--       group = format_group,
+--       buffer = event.buf,
+--       desc = 'LSP format on save',
+--       callback = function()
+--         vim.lsp.buf.format({
+--           bufnr = event.buf,
+--           async = false,
+--           timeout_ms = 1000,
+--         })
+--       end,
+--     })
+--   end,
+-- })
+
+local format_group = vim.api.nvim_create_augroup(
+  "lsp_autoformat",
+  { clear = false }
+)
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "LSP format on save",
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+    if not client then
+      return
+    end
+
+    if not client:supports_method("textDocument/formatting") then
+      return
+    end
+
+    vim.api.nvim_clear_autocmds({
+      group = format_group,
+      buffer = event.buf,
+    })
+
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = format_group,
+      buffer = event.buf,
+      callback = function()
+        vim.lsp.buf.format({
+          bufnr = event.buf,
+          async = false,
+          timeout_ms = 800,
+        })
+      end,
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MiniStarterOpened',
   callback = function()
-    -- Ejemplo: formatear con LSP
-    vim.lsp.buf.format({ async = false })
+    MiniClue.ensure_buf_triggers()
   end,
 })
