@@ -11,9 +11,7 @@ now(function()
   later(MiniIcons.tweak_lsp_kind)
 end)
 
-now(function() require('mini.notify').setup({ content = { sort = custom_sort } }) end)
-
-now(function() require('mini.starter').setup() end)
+now(function() require('mini.notify').setup() end)
 
 now(function() require('mini.tabline').setup() end)
 
@@ -69,7 +67,7 @@ later(function()
 end)
 -- later(function() require('mini.pairs').setup() end)
 
-later(function() require('mini.pick').setup() end)
+-- later(function() require('mini.pick').setup() end)
 
 later(function() require('mini.surround').setup() end)
 
@@ -98,21 +96,14 @@ now(function()
 end)
 
 -- Mini Starter ====================================================================================================
--- Mvim_starter_custom = function()
---   return {
---     { name = "Quit Neovim", action = "qa",                                                    section = "", },
---     { name = "Old Files",   action = function() require("mini.extra").pickers.oldfiles() end, section = "" },
---     { name = "sessions",    action = function() require("mini.sessions").select() end,        section = "" },
---   }
--- end
 require("mini.starter").setup({
   autoopen = true,
   items = {
-    { name = "Quit Neovim", action = "qa",                                                    section = "", },
-    { name = "Old Files",   action = function() require("mini.extra").pickers.oldfiles() end, section = "" },
-    { name = "sessions",    action = function() require("mini.sessions").select() end,        section = "" },
-    { name = "Find Files",  action = function() require("fzf").files() end,                   section = "" },
-    { name = "Rip Grep",    action = function() require("fzf").grep() end,                    section = "" },
+    { name = "Quit Neovim", action = "qa",                                         section = "", },
+    { name = "Old Files",   action = function() require("fzf").oldfiles() end,     section = "" },
+    { name = "sessions",    action = function() require("fzf").session_load() end, section = "" },
+    { name = "Find Files",  action = function() require("fzf").files() end,        section = "" },
+    { name = "Rip Grep",    action = function() require("fzf").grep() end,         section = "", },
   },
   header = function()
     local image = [[
@@ -157,7 +148,7 @@ vim.api.nvim_create_autocmd('ColorScheme', { callback = set_hl })
 
 local function sep(icon, hl_from, hl_to)
   local fg = vim.api.nvim_get_hl(0, { name = hl_from }).bg
-  local bg = vim.api.nvim_get_hl(0, { name = hl_to }).bg
+  local bg = hl_to ~= '' and vim.api.nvim_get_hl(0, { name = hl_to }).bg or 'NONE'
   local name = 'SLSep_' .. hl_from .. '_' .. hl_to
   vim.api.nvim_set_hl(0, name, { fg = fg or 'NONE', bg = bg or 'NONE' })
   return '%#' .. name .. '#' .. icon
@@ -182,36 +173,38 @@ local function diag()
   return table.concat(p, ' ') .. '%#SLMid#'
 end
 
-require('mini.statusline').setup({
-  content = {
-    active = function()
-      local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-      local git           = MiniStatusline.section_git({ trunc_width = 75, icon = ' ' })
-      local diff          = MiniStatusline.section_diff({ trunc_width = 75, icon = '' })
-      local ficon         = require('mini.icons').get('file', vim.fn.expand('%:t'))
-      local vicon         = require('mini.icons').get('filetype', 'vim')
-      local user          = os.getenv("USER") or "User"
-      local d             = diag()
-      local diff_colored  = diff:gsub('%+(%d+)', ' %1'):gsub('~(%d+)', '󰝤 %1'):gsub('%-(%d+)', ' %1')
-      local left          =
-          '%#' .. mode_hl .. '# ' .. vicon .. ' ' .. mode .. ' '
-          .. sep('', mode_hl, 'SLMid')
-          .. sep('', 'SLMid', 'SLFile')
-          .. ' %#SLFile#' .. ficon .. '%#SLFile# %t%m '
-          .. sep('', 'SLFile', '')
-          .. (git ~= '' and ('%#SLGitBranch# ' .. git .. ' ' .. diff_colored) or '')
-      local right         =
-          d
-          .. '%#Hint#  LSP:' .. lsp_info() .. ' '
-          .. '%#Err#'
-          .. ''
-          .. '%#SLCaps#󰉋 ' .. '%#SLFile# ' .. user .. ' '
-          .. '%#SLSepGreen#'
-          .. ''
-          .. '%#SLCapsGreen#󰈚 ' .. '%#SLInfo# %l:%c '
-          .. '%#SLSepGreen#'
-      return left .. '%=' .. '%=' .. right
-    end,
-    inactive = function() return '%#SLInfo# %f %=' end,
-  },
-})
+now(function()
+  require('mini.statusline').setup({
+    content = {
+      active = function()
+        local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+        local git           = MiniStatusline.section_git({ trunc_width = 75, icon = ' ' })
+        local diff          = MiniStatusline.section_diff({ trunc_width = 75, icon = '' })
+        local ficon         = require('mini.icons').get('file', vim.fn.expand('%:t'))
+        local vicon         = require('mini.icons').get('filetype', 'vim')
+        local user          = os.getenv("USER") or "User"
+        local d             = diag()
+        local diff_colored  = diff:gsub('%+(%d+)', ' %1'):gsub('~(%d+)', '󰝤 %1'):gsub('%-%-(%d+)', ' %1')
+        local left          =
+            '%#' .. mode_hl .. '# ' .. vicon .. ' ' .. mode .. ' '
+            .. sep('', mode_hl, 'SLMid')
+            .. sep('', 'SLMid', 'SLFile')
+            .. ' %#SLFile#' .. ficon .. '%#SLFile# %t%m '
+            .. sep('', 'SLFile', '')
+            .. (git ~= '' and ('%#SLGitBranch# ' .. git .. ' ' .. diff_colored) or '')
+        local right         =
+            d
+            .. '%#Hint#  LSP:' .. lsp_info() .. ' '
+            .. '%#Err#'
+            .. ''
+            .. '%#SLCaps#󰉋 ' .. '%#SLFile# ' .. user .. ' '
+            .. '%#SLSepGreen#'
+            .. ''
+            .. '%#SLCapsGreen#󰈚 ' .. '%#SLInfo# %l:%c '
+            .. '%#SLSepGreen#'
+        return left .. '%=' .. '%=' .. right
+      end,
+      inactive = function() return '%#SLInfo# %f %=' end,
+    },
+  })
+end)

@@ -65,6 +65,7 @@ Config.leader_group_clues = {
   { mode = 'n', keys = '<Leader>f', desc = '󰱼 Find' },
   { mode = 'n', keys = '<Leader>e', desc = ' Explore/Edit' },
   { mode = 'n', keys = '<Leader>g', desc = '󰘬 Git' },
+  { mode = 'n', keys = '<Leader>h', desc = '󰚩 Harpoon' },
   { mode = 'n', keys = '<Leader>r', desc = '󰗼  kulala/rest' },
   { mode = 'n', keys = '<Leader>l', desc = ' Language' },
   { mode = 'n', keys = '<Leader>o', desc = '󰚩 Other' },
@@ -101,30 +102,40 @@ nmap_leader('eQ', explore_locations, 'Location list')
 nmap_leader('et', '<Cmd>NvimTreeOpen()<CR>', 'NerdTree')
 
 
-local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
-local pick_workspace_symbols_live = '<Cmd>Pick lsp scope="workspace_symbol_live"<CR>'
-nmap_leader('f/', '<Cmd>Pick history scope="/"<CR>', '"/" history')
-nmap_leader('f:', '<Cmd>Pick history scope=":"<CR>', '":" history')
-nmap_leader('fa', '<Cmd>Pick git_hunks scope="staged"<CR>', 'Added hunks (all)')
-nmap_leader('fA', pick_added_hunks_buf, 'Added hunks (buf)')
-nmap_leader('fb', '<Cmd>Pick buffers<CR>', 'Buffers')
-nmap_leader('fc', '<Cmd>Pick git_commits<CR>', 'Commits (all)')
-nmap_leader('fC', '<Cmd>Pick git_commits path="%"<CR>', 'Commits (buf)')
-nmap_leader('fd', '<Cmd>Pick diagnostic scope="all"<CR>', 'Diagnostic workspace')
-nmap_leader('fD', '<Cmd>Pick diagnostic scope="current"<CR>', 'Diagnostic buffer')
-nmap_leader('ff', '<Cmd>Pick files<CR>', 'Files')
-nmap_leader('fg', '<Cmd>Pick grep_live<CR>', 'Grep live')
-nmap_leader('fG', '<Cmd>Pick grep pattern="<cword>"<CR>', 'Grep current word')
-nmap_leader('fh', '<Cmd>Pick help<CR>', 'Help tags')
-nmap_leader('fH', '<Cmd>Pick hl_groups<CR>', 'Highlight groups')
-nmap_leader('fm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
-nmap_leader('fM', '<Cmd>Pick git_hunks path="%"<CR>', 'Modified hunks (buf)')
-nmap_leader('fr', '<Cmd>Pick resume<CR>', 'Resume')
-nmap_leader('fR', '<Cmd>Pick lsp scope="references"<CR>', 'References (LSP)')
-nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
-nmap_leader('fS', '<Cmd>Pick lsp scope="document_symbol"<CR>', 'Symbols document')
-nmap_leader('fv', '<Cmd>Pick visit_paths cwd=""<CR>', 'Visit paths (all)')
-nmap_leader('fV', '<Cmd>Pick visit_paths<CR>', 'Visit paths (cwd)')
+-- local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
+-- local pick_workspace_symbols_live = '<Cmd>Pick lsp scope="workspace_symbol_live"<CR>'
+-- nmap_leader('f/', '<Cmd>Pick history scope="/"<CR>', '"/" history')
+-- nmap_leader('f:', '<Cmd>Pick history scope=":"<CR>', '":" history')
+-- nmap_leader('fa', '<Cmd>Pick git_hunks scope="staged"<CR>', 'Added hunks (all)')
+-- nmap_leader('fA', pick_added_hunks_buf, 'Added hunks (buf)')
+-- nmap_leader('fc', '<Cmd>Pick git_commits<CR>', 'Commits (all)')
+-- nmap_leader('fC', '<Cmd>Pick git_commits path="%"<CR>', 'Commits (buf)')
+-- nmap_leader('fd', '<Cmd>Pick diagnostic scope="all"<CR>', 'Diagnostic workspace')
+-- nmap_leader('fD', '<Cmd>Pick diagnostic scope="current"<CR>', 'Diagnostic buffer')
+-- nmap_leader('fb', '<Cmd>Pick buffers<CR>', 'Buffers')
+-- nmap_leader('ff', '<Cmd>Pick files<CR>', 'Files')
+-- nmap_leader('fg', '<Cmd>Pick grep_live<CR>', 'Grep live')
+-- nmap_leader('fG', '<Cmd>Pick grep pattern="<cword>"<CR>', 'Grep current word')
+-- nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
+
+nmap_leader('fb', '<Cmd>FzfBuffers<CR>', 'Files')
+nmap_leader('fd', '<Cmd>FzfLspDiagnostics<CR>', 'Diagnostics')
+nmap_leader('ff', '<Cmd>FzfFiles<CR>', 'Files')
+nmap_leader('fg', '<Cmd>FzfGrep<CR>', 'Files')
+nmap_leader('fG', '<Cmd>FzfGrepW<CR>', 'Grep current word')
+nmap_leader('fr', '<Cmd>FzfLspReferences<CR>', 'References (LSP)')
+nmap_leader('fs', '<Cmd>FzfLspSymbols<CR>', 'Symbols')
+
+-- nmap_leader('fh', '<Cmd>Pick help<CR>', 'Help tags')
+-- nmap_leader('fH', '<Cmd>Pick hl_groups<CR>', 'Highlight groups')
+-- nmap_leader('fm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
+-- nmap_leader('fM', '<Cmd>Pick git_hunks path="%"<CR>', 'Modified hunks (buf)')
+-- nmap_leader('fr', '<Cmd>Pick resume<CR>', 'Resume')
+-- nmap_leader('fR', '<Cmd>Pick lsp scope="references"<CR>', 'References (LSP)')
+-- nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
+-- nmap_leader('fS', '<Cmd>Pick lsp scope="document_symbol"<CR>', 'Symbols document')
+-- nmap_leader('fv', '<Cmd>Pick visit_paths cwd=""<CR>', 'Visit paths (all)')
+-- nmap_leader('fV', '<Cmd>Pick visit_paths<CR>', 'Visit paths (cwd)')
 
 nmap_leader('gg', lazygit, 'Lazygit')
 nmap_leader('gC', '<Cmd>Git commit --amend<CR>', 'Commit amend')
@@ -135,40 +146,11 @@ nmap_leader('ga', '<Cmd>Git diff --cached<CR>', 'Added diff')
 nmap_leader('gc', '<Cmd>Git commit<CR>', 'Commit')
 nmap_leader('gA', '<Cmd>Git diff --cached -- %<CR>', 'Added diff buffer')
 nmap_leader('gb', '<Cmd>lua MiniExtra.pickers.git_branches()<CR>', 'Lazygit')
-nmap_leader('gl', '<Cmd>lua MiniExtra.pickers.git_commits()<CR>', 'Lazygit')
-nmap_leader('gb', function()
-  local branch = vim.fn.system('git branch --list --format="%(refname:short)"')
-  MiniPick.start({
-    source = {
-      items = vim.split(branch, '\n'),
-      name = 'Git Branches',
-      choose = function(item)
-        vim.fn.system('git checkout ' .. item)
-        vim.notify('Switched to branch: ' .. item)
-        vim.cmd('checktime')
-      end,
-    },
-  })
-end, 'Git branches')
-
-nmap_leader('gl', function()
-  local commits = vim.fn.system('git log --oneline -50')
-  MiniPick.start({
-    source = {
-      items = vim.split(vim.trim(commits), '\n'),
-      name = 'Git Commits',
-      choose = function(item)
-        local hash = item:match('^(%x+)')
-        vim.fn.system('git checkout ' .. hash)
-        vim.notify('Checked out: ' .. hash)
-        vim.cmd('checktime')
-      end,
-    },
-  })
-end, 'Git commits')
+nmap_leader('gb', '<Cmd>FzfGitBranches<CR>', 'Git Branch')
+nmap_leader('gl', '<Cmd>FzfGitCommits<CR>', 'Git Commits')
+nmap_leader('gs', '<Cmd>FzfGitStatus<CR>', 'Git Status')
 nmap_leader('gd', '<Cmd>Git diff<CR>', 'Diff')
 nmap_leader('gD', '<Cmd>Git diff -- %<CR>', 'Diff buffer')
--- nmap_leader('gl', '<Cmd>' .. git_log_cmd .. '<CR>', 'Log')
 nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
 
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
@@ -197,12 +179,19 @@ nmap_leader("oy", "mzyyp`zj", "copy/paste")
 nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>', 'Zoom toggle')
 
 
-local session_new = 'vim.ui.input({ prompt = "Session name: " }, MiniSessions.write)'
-nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
-nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
-nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
-nmap_leader('sR', '<Cmd>lua MiniSessions.restart()<CR>', 'Restart')
-nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
+-- local session_new = 'vim.ui.input({ prompt = "Session name: " }, MiniSessions.write)'
+-- nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
+-- nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
+-- nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
+-- nmap_leader('sR', '<Cmd>lua MiniSessions.restart()<CR>', 'Restart')
+-- nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
+nmap_leader('sl', '<Cmd>FzfSessionLoad<CR>', 'Read')
+nmap_leader('sd', '<Cmd>FzfSessionDelete<CR>', 'Delete')
+nmap_leader('sv', '<Cmd>FzfSessionSave<CR>', 'Save')
+
+nmap_leader('hh', '<Cmd>FzfHarpoon<CR>', 'Read')
+nmap_leader('ha', '<Cmd>FzfHarpoonAdd<CR>', 'add')
+nmap_leader('hd', '<Cmd>FzfHarpoonRemove<CR>', 'Delete')
 
 local make_pick_core = function(cwd, desc)
   return function()

@@ -114,12 +114,18 @@ local diagnostic_opts = {
   float = {
     source = "always",
     header = "",
-    border = "single",
     focusable = false,
   },
-  virtual_text = true,
+  -- virtual_text = true,
+  virtual_text = {
+    current_line = true,
+    spacing = 2,
+    prefix = "",
+    source = false,
+  },
+  current_line = true,
   underline = { severity = { min = 'HINT', max = 'ERROR' } },
-  virtual_lines = false,
+  severity_sort = true,
   update_in_insert = false,
 }
 

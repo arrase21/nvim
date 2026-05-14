@@ -11,33 +11,23 @@ end)
 now(function()
   add("rebelot/kanagawa.nvim")
   require('kanagawa').setup({
-    transparent = true,
-    compile = false,
-    colors = {
-      palette = {},
-      theme = {
-        all = {
-          ui = {
-            float = {
-              bg = "none",
-            },
-            bg_gutter = "none",
-          }
-        }
-      }
-    },
-    overrides = function(colors)
-      local theme = colors.theme
-      return {
-        NormalFloat  = { bg = "none" },
-        FloatBorder  = { bg = "none" },
-        FloatTitle   = { bg = "none" },
-        StatusLine   = { bg = theme.ui.bg_p1 },
-        StatusLineNC = { bg = theme.ui.bg_m1 },
-      }
-    end,
+    -- transparent = true,
+    -- compile = false,
+    -- colors = {
+    --   palette = {},
+    --   theme = {
+    --     all = {
+    --       ui = {
+    --         float = {
+    --           bg = "none",
+    --         },
+    --         bg_gutter = "none",
+    --       }
+    --     }
+    --   }
+    -- },
   })
-  -- vim.cmd("colorscheme kanagawa-wave")
+  vim.cmd("colorscheme kanagawa-wave")
 end)
 now(function()
   add("arrase21/gruvbox")
@@ -172,8 +162,11 @@ later(function()
   })
 end)
 
-now(function()
-  add("arrase21/mini-pick-preview.nvim")
-  require("mini-pick-preview").setup()
+later(function()
+  add("arrase21/fzfnvim")
+  require("fzf").setup({
+    -- ui = {
+    --   layout = "horizontal",
+    -- }
+  })
 end)
--- later(function() add('https://github.com/rafamadriz/friendly-snippets') end)
