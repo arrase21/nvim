@@ -8,7 +8,7 @@ now_if_args(function()
   })
 end)
 
-now(function()
+later(function()
   add("rebelot/kanagawa.nvim")
   require('kanagawa').setup({
     -- transparent = true,
@@ -105,7 +105,7 @@ later(function()
   vim.api.nvim_set_hl(0, "MiniCursorword", { link = "Visual" })
 end)
 
-now(function()
+later(function()
   add("nvim-tree/nvim-tree.lua")
   require("nvim-tree").setup({
     diagnostics = {
@@ -168,10 +168,3 @@ later(function()
     ui_select = false,
   })
 end)
-
-
--- later(function()
---   add("ibhagwan/fzf-lua")
---   require("fzf-lua").setup()
---   require("fzf-lua").register_ui_select() -- <- Agregar aquí
--- end)

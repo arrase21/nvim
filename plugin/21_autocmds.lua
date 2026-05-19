@@ -33,20 +33,6 @@ Config.new_autocmd("BufReadPost", "*", function(event)
   end
 end, "Restore last cursor position")
 
-
--- Highlight del símbolo bajo el cursor via LSP
--- vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
---   desc = "LSP hover actions",
---   group = vim.api.nvim_create_augroup('LspCursorHold', { clear = true }),
---   callback = function()
---     vim.diagnostic.open_float(nil, { focusable = false })
---     local clients = vim.lsp.get_clients({ bufnr = 0 })
---     if #clients > 0 then
---       vim.lsp.buf.document_highlight()
---     end
---   end,
--- })
-
 vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
   desc = "Clear LSP references",
   group = vim.api.nvim_create_augroup('LspCursorMoved', { clear = true }),
@@ -99,7 +85,6 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
--- Función nativa para colorear códigos Hexadecimales en el buffer actual
 local function colorear_css_nativo()
   local ns = vim.api.nvim_create_namespace("CSSColoresNativos")
   vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
@@ -120,7 +105,6 @@ local function colorear_css_nativo()
   end
 end
 
--- Ejecutar automáticamente al abrir o modificar archivos CSS
 vim.api.nvim_create_autocmd({ "BufReadPost", "TextChanged", "TextChangedI" }, {
   pattern = { "*.css", "*.html", "*.js" },
   callback = colorear_css_nativo,

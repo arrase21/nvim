@@ -132,39 +132,4 @@ return {
       },
     },
   },
-  setup = {
-    gopls = function(_, opts)
-      lsp.on({ name = "gopls" }, function(_, client)
-        if not client.server_capabilities.semanticTokensProvider then
-          local semantic = client.config.capabilities.textDocument.semanticTokens
-          client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = {
-              tokenTypes = semantic.tokenTypes,
-              tokenModifiers = semantic.tokenModifiers,
-            },
-            range = true,
-          }
-        end
-      end)
-      -- end workaround
-    end,
-  },
 }
-
--- return {
---   cmd = { "gopls" },
---   filetypes = { "go", "gomod", "gowork", "gotmpl" },
---   root_markers = { "go.work", "go.mod", ".git" },
---   settings = {
---     gopls = {
---       completeUnimported = true,
---       usePlaceholders = true,
---       analyses = {
---         unusedparams = true,
---         shadow = true,
---       },
---       gofumpt = true, -- activa gofumpt dentro de gopls
---     },
---   },
--- }

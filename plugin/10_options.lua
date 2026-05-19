@@ -54,7 +54,7 @@ vim.o.foldtext       = ''       -- Use default fold text
 -- Editing ====================================================================
 vim.o.autoindent    = true
 vim.o.expandtab     = true
-vim.o.formatoptions = 'jcroqlnt'
+vim.o.formatoptions = 'jqln'
 vim.o.ignorecase    = true
 vim.o.incsearch     = true
 vim.o.infercase     = true
@@ -64,7 +64,6 @@ vim.o.smartindent   = true
 vim.o.tabstop       = 2
 vim.o.smarttab      = true
 vim.o.virtualedit   = 'block'
--- vim.o.completeopt   = 'menuone,noselect'
 vim.o.completeopt   = 'menuone,noinsert'
 vim.o.complete      = '.,w,b,kspell'
 vim.o.confirm       = true
@@ -90,10 +89,6 @@ vim.o.clipboard     = vim.env.SSH_TTY and '' or 'unnamedplus'
 -- Undercurl support
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
-
--- Autocommands ===============================================================
-local ensure_fo = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
-_G.Config.new_autocmd('FileType', '*', ensure_fo, "Proper 'formatoptions'")
 
 -- Diagnostics ================================================================
 local diagnostic_opts = {
