@@ -12,22 +12,22 @@ now(function()
   add("rebelot/kanagawa.nvim")
   require('kanagawa').setup({
     -- transparent = true,
-    -- compile = false,
-    -- colors = {
-    --   palette = {},
-    --   theme = {
-    --     all = {
-    --       ui = {
-    --         float = {
-    --           bg = "none",
-    --         },
-    --         bg_gutter = "none",
-    --       }
-    --     }
-    --   }
-    -- },
+    compile = false,
+    colors = {
+      palette = {},
+      theme = {
+        all = {
+          ui = {
+            float = {
+              bg = "none",
+            },
+            bg_gutter = "none",
+          }
+        }
+      }
+    },
   })
-  vim.cmd("colorscheme kanagawa-wave")
+  -- vim.cmd("colorscheme kanagawa-wave")
 end)
 now(function()
   add("arrase21/gruvbox")
@@ -105,7 +105,7 @@ later(function()
   vim.api.nvim_set_hl(0, "MiniCursorword", { link = "Visual" })
 end)
 
-later(function()
+now(function()
   add("nvim-tree/nvim-tree.lua")
   require("nvim-tree").setup({
     diagnostics = {
@@ -165,8 +165,13 @@ end)
 later(function()
   add("arrase21/fzfnvim")
   require("fzf").setup({
-    -- ui = {
-    --   layout = "horizontal",
-    -- }
+    ui_select = false,
   })
 end)
+
+
+-- later(function()
+--   add("ibhagwan/fzf-lua")
+--   require("fzf-lua").setup()
+--   require("fzf-lua").register_ui_select() -- <- Agregar aquí
+-- end)

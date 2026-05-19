@@ -64,7 +64,8 @@ vim.o.smartindent   = true
 vim.o.tabstop       = 2
 vim.o.smarttab      = true
 vim.o.virtualedit   = 'block'
-vim.o.completeopt   = 'menuone,noselect'
+-- vim.o.completeopt   = 'menuone,noselect'
+vim.o.completeopt   = 'menuone,noinsert'
 vim.o.complete      = '.,w,b,kspell'
 vim.o.confirm       = true
 vim.o.hlsearch      = true
@@ -125,7 +126,6 @@ local diagnostic_opts = {
   },
   current_line = true,
   underline = { severity = { min = 'HINT', max = 'ERROR' } },
-  severity_sort = true,
   update_in_insert = false,
 }
 

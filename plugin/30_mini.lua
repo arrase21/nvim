@@ -65,17 +65,10 @@ later(function()
     return require('mini.pairs').cr()
   end, { expr = true })
 end)
--- later(function() require('mini.pairs').setup() end)
-
--- later(function() require('mini.pick').setup() end)
 
 later(function() require('mini.surround').setup() end)
 
-later(function() require('mini.visits').setup() end)
-
-now(function() require('mini.sessions').setup() end)
-
--- now(function() require('mini.cursorword').setup() end)
+now(function() require('mini.cursorword').setup() end)
 
 now(function()
   local miniclue = require('mini.clue')

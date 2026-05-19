@@ -1,4 +1,3 @@
-
 ---@brief
 --- @class go_dir_custom_args
 ---

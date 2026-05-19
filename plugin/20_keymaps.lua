@@ -55,6 +55,7 @@ local nmap = function(lhs, rhs, desc)
   vim.keymap.set('n', lhs, rhs, { desc = desc })
 end
 
+nmap('K', vim.lsp.buf.hover, 'Hover documentation')
 nmap('[p', '<Cmd>exe "iput! " . v:register<CR>', 'Paste Above')
 nmap(']p', '<Cmd>exe "iput "  . v:register<CR>', 'Paste Below')
 
@@ -85,7 +86,6 @@ local xmap_leader = function(suffix, rhs, desc)
 end
 nmap_leader('bd', '<cmd>bwipeout<cr>', 'Delete')
 
--- - All mappings that use `edit_plugin_file` - edit 'plugin/' config files
 local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
 local explore_quickfix = function()
   vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
@@ -118,8 +118,9 @@ nmap_leader('et', '<Cmd>NvimTreeOpen()<CR>', 'NerdTree')
 -- nmap_leader('fG', '<Cmd>Pick grep pattern="<cword>"<CR>', 'Grep current word')
 -- nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
 
-nmap_leader('fb', '<Cmd>FzfBuffers<CR>', 'Files')
+nmap_leader('fb', '<Cmd>FzfBuffers<CR>', 'Buffers')
 nmap_leader('fd', '<Cmd>FzfLspDiagnostics<CR>', 'Diagnostics')
+nmap_leader('fD', '<Cmd>FzfLspDefinitions<CR>', 'Diagnostics')
 nmap_leader('ff', '<Cmd>FzfFiles<CR>', 'Files')
 nmap_leader('fg', '<Cmd>FzfGrep<CR>', 'Files')
 nmap_leader('fG', '<Cmd>FzfGrepW<CR>', 'Grep current word')
