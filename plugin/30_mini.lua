@@ -1,7 +1,5 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-
 add({ name = 'mini.nvim', checkout = 'HEAD' })
-
 
 now(function()
   require('mini.icons').setup({
@@ -12,23 +10,21 @@ now(function()
 end)
 
 now(function() require('mini.notify').setup() end)
+now(function() require('mini.cursorword').setup() end)
 
-now(function() require('mini.tabline').setup() end)
 
--- Step two ===================================================================
-later(function() require('mini.extra').setup() end)
-
-later(function()
+now(function()
   local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
   local process_items = function(items, base)
     return MiniCompletion.default_process_items(items, base, process_items_opts)
   end
   require('mini.completion').setup({
-    lsp_completion = { source_func = 'omnifunc', auto_setup = false, process_items = process_items },
+    lsp_completion = {
+      source_func = 'omnifunc', auto_setup = false, process_items = process_items, },
   })
-  local on_attach = function(args) vim.bo[args.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp' end
-  _G.Config.new_autocmd('LspAttach', '*', on_attach, 'Custom `on_attach`')
-  if vim.fn.has('nvim-0.11') == 1 then vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() }) end
+  local on_attach = function(ev) vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp' end
+  Config.new_autocmd('LspAttach', nil, on_attach, "Set 'omnifunc'")
+  vim.lsp.config('*', { capabilities = MiniCompletion.get_lsp_capabilities() })
 end)
 
 later(function()
@@ -39,7 +35,6 @@ later(function()
     }
   })
 end)
-
 later(function()
   require('mini.files').setup({
     windows = {
@@ -51,24 +46,10 @@ later(function()
     },
   })
 end)
-
 later(function() require('mini.git').setup() end)
-
 later(function() require('mini.indentscope').setup() end)
-
-later(function()
-  require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = false } })
-  vim.keymap.set('i', '<CR>', function()
-    if vim.fn.pumvisible() == 1 then
-      return vim.api.nvim_replace_termcodes('<C-y>', true, false, true)
-    end
-    return require('mini.pairs').cr()
-  end, { expr = true })
-end)
-
+later(function() require('mini.pairs').setup() end)
 later(function() require('mini.surround').setup() end)
-
-now(function() require('mini.cursorword').setup() end)
 
 now(function()
   local miniclue = require('mini.clue')
@@ -87,36 +68,6 @@ now(function()
     },
   })
 end)
-
--- Mini Starter ====================================================================================================
-require("mini.starter").setup({
-  autoopen = true,
-  items = {
-    { name = "Quit Neovim", action = "qa",                                         section = "", },
-    { name = "Old Files",   action = function() require("fzf").oldfiles() end,     section = "" },
-    { name = "sessions",    action = function() require("fzf").session_load() end, section = "" },
-    { name = "Find Files",  action = function() require("fzf").files() end,        section = "" },
-    { name = "Rip Grep",    action = function() require("fzf").grep() end,         section = "", },
-  },
-  header = function()
-    local image = [[
-   ┌────────────────────────┐
-   │                        │
-   │   ▞▀▖▛▀▖▛▀▖▞▀▖▞▀▖▛▀▘   │
-   │   ▙▄▌▙▄▘▙▄▘▙▄▌▚▄ ▙▄    │
-   │   ▌ ▌▌▚ ▌▚ ▌ ▌▖ ▌▌     │
-   │   ▘ ▘▘ ▘▘ ▘▘ ▘▝▀ ▀▀    │
-   └────────────────────────┘
-   ]]
-    return image
-  end,
-  footer = "",
-  query_updater = false,
-})
-
--- now(function()
---   require('mini.statusline').setup()
--- end)
 
 -- Mini Statusline ================================================================================================
 local function set_hl()
@@ -159,7 +110,7 @@ local function diag()
   local counts = vim.diagnostic.count(0)
   if not next(counts) then return '' end
   local p = {}
-  if counts[1] then table.insert(p, '%#Err#  ' .. counts[1]) end
+  if counts[1] then table.insert(p, '%#Err#  ' .. counts[1]) end
   if counts[2] then table.insert(p, '%#Warn# ' .. counts[2]) end
   if counts[3] then table.insert(p, '%#Info# ' .. counts[3]) end
   if counts[4] then table.insert(p, '%#Hint#󰌵 ' .. counts[4]) end

@@ -1,14 +1,3 @@
--- ┌────────────────┐
--- │ LSP Auto-Enable│
--- └────────────────┘
-local lsp_files = vim.api.nvim_get_runtime_file('lsp/*.lua', true)
-local configs = {}
-for _, path in ipairs(lsp_files) do
-  table.insert(configs, vim.fn.fnamemodify(path, ':t:r'))
-end
-if #configs > 0 then
-  vim.lsp.enable(configs)
-end
 
 local mini_path = vim.fn.stdpath('data') .. '/site/pack/deps/start/mini.nvim'
 if not vim.loop.fs_stat(mini_path) then

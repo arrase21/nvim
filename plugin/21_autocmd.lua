@@ -84,28 +84,3 @@ vim.api.nvim_create_autocmd('User', {
     MiniClue.ensure_buf_triggers()
   end,
 })
-
-local function colorear_css_nativo()
-  local ns = vim.api.nvim_create_namespace("CSSColoresNativos")
-  vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-
-  local lineas = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  for num_linea, linea in ipairs(lineas) do
-    -- Busca patrones tipo #RRGGBB
-    for hex in linea:gmatch("#%x%x%x%x%x%x") do
-      local ini, fin = linea:find(hex)
-      if ini then
-        local name = "Hex_" .. hex:sub(2)
-        -- Crea el grupo de resaltado nativo
-        vim.api.nvim_set_hl(0, name, { fg = "#000000", bg = hex })
-        -- Aplica el color al buffer
-        vim.api.nvim_buf_add_highlight(0, ns, name, num_linea - 1, ini - 1, fin)
-      end
-    end
-  end
-end
-
-vim.api.nvim_create_autocmd({ "BufReadPost", "TextChanged", "TextChangedI" }, {
-  pattern = { "*.css", "*.html", "*.js" },
-  callback = colorear_css_nativo,
-})
