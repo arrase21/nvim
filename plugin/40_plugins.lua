@@ -33,7 +33,7 @@ now(function()
   add("arrase21/gruvbox")
   vim.g.gruvbox_contrast_dark = "hard"
   vim.o.background = "dark"
-  -- vim.cmd('colorscheme gruvbox')
+  vim.cmd('colorscheme gruvbox')
 end)
 --Dracula
 now_if_args(function()
@@ -41,7 +41,7 @@ now_if_args(function()
   require("dracula").setup({
     -- transparent_bg = true
   })
-  vim.cmd('colorscheme dracula')
+  -- vim.cmd('colorscheme dracula')
 end)
 later(function()
   add("mistweaverco/kulala.nvim")
@@ -121,19 +121,6 @@ later(function()
       --   border = "border-bottom", -- estilo borde del preview
       -- },
     },
-  })
-end)
-
---LSP
-now_if_args(function()
-  add("mason-org/mason.nvim")
-  require('mason').setup()
-end)
-
-now_if_args(function()
-  add("neovim/nvim-lspconfig")
-  vim.lsp.enable({
-    'lua_ls', 'gopls', 'ruff'
   })
 end)
 
