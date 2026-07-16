@@ -33,7 +33,7 @@ now(function()
   add("arrase21/gruvbox")
   vim.g.gruvbox_contrast_dark = "hard"
   vim.o.background = "dark"
-  vim.cmd('colorscheme gruvbox')
+  -- vim.cmd('colorscheme gruvbox')
 end)
 --Dracula
 now_if_args(function()
@@ -41,7 +41,7 @@ now_if_args(function()
   require("dracula").setup({
     -- transparent_bg = true
   })
-  -- vim.cmd('colorscheme dracula')
+  vim.cmd('colorscheme dracula')
 end)
 later(function()
   add("mistweaverco/kulala.nvim")
@@ -172,4 +172,37 @@ later(function()
   vim.fn.sign_define("DapBreakpoint", { text = "󰃤 ", texthl = "DapBreakpoint" })
   vim.fn.sign_define("DapBreakpointCondition", { text = "󱌢 ", texthl = "DapBreakpointCondition" })
   vim.fn.sign_define("DapStopped", { text = "→", texthl = "DapStopped" })
+end)
+
+now(function()
+  add({
+    source = "malewicz1337/oil-git.nvim",
+    depends = {"stevearc/oil.nvim"}
+  })
+  require("oil").setup()
+  require("oil-git").setup({
+     symbols = {
+        file = { 
+          added = "",
+          modified = "",
+          renamed = "➔",
+          deleted = "",
+          unstaged = "",
+          copied = "",
+          conflict = "⚠",
+          untracked = "",
+          hidden = "󱙝",
+        },
+        directory = { 
+          added = "",
+          modified = "",
+          renamed = "",
+          deleted = "",
+          copied = "",
+          conflict = "",
+          untracked = "",
+          ignored = "◌"
+        },
+      },
+  })
 end)

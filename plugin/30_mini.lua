@@ -12,7 +12,6 @@ end)
 now(function() require('mini.notify').setup() end)
 now(function() require('mini.cursorword').setup() end)
 
-
 now(function()
   local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
   local process_items = function(items, base)
@@ -33,17 +32,6 @@ later(function()
       style = "sign",
       signs = { add = '▒', change = '▒', delete = '消' },
     }
-  })
-end)
-later(function()
-  require('mini.files').setup({
-    windows = {
-      preview = true
-    },
-    mappings = {
-      go_in_plus = "<CR>",
-      synchronize = "<Leader>w",
-    },
   })
 end)
 later(function() require('mini.git').setup() end)
@@ -152,3 +140,29 @@ now(function()
     },
   })
 end)
+
+
+require("mini.starter").setup({
+  autoopen = true,
+  items = {
+    { name = "Quit Neovim", action = "qa",                                                    section = "", },
+    { name = "Old Files",   action = function() require("fzf").oldfiles() end, section = "" },
+    { name = "Sessions",    action = function() require("fzf").session_load() end,        section = "" },
+    { name = "Find Files",  action = function() require("fzf").files() end,                   section = "" },
+    { name = "Rip Grep",    action = function() require("fzf").grep() end,                    section = "" },
+  },
+  header = function()
+    local image = [[
+   ┌────────────────────────┐
+   │                        │
+   │   ▞▀▖▛▀▖▛▀▖▞▀▖▞▀▖▛▀▘   │
+   │   ▙▄▌▙▄▘▙▄▘▙▄▌▚▄ ▙▄    │
+   │   ▌ ▌▌▚ ▌▚ ▌ ▌▖ ▌▌     │
+   │   ▘ ▘▘ ▘▘ ▘▘ ▘▝▀ ▀▀    │
+   └────────────────────────┘
+   ]]
+    return image
+  end,
+  footer = "",
+  query_updater = false,
+})

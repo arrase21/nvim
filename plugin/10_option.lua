@@ -43,6 +43,7 @@ vim.o.confirm        = true
 vim.o.updatetime     = 200
 vim.o.backup         = false
 vim.o.showcmd        = true
+vim.o.showmode       = false
 
 
 -- Diagnostics ================================================================
