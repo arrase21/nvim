@@ -22,9 +22,10 @@ end
 
 local function inlay_hint()
   local buf = vim.api.nvim_get_current_buf()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
+  local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = buf })
+  vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = buf })
   vim.notify(
-    vim.lsp.inlay_hint.is_enabled({ bufnr = buf }) and "Inlay hints: ON" or "Inlay hints: OFF",
+    not is_enabled and "Inlay hints: ON" or "Inlay hints: OFF",
     vim.log.levels.INFO
   )
 end
@@ -66,19 +67,13 @@ local xmap_leader = function(suffix, rhs, desc)
 end
 nmap_leader('bd', '<cmd>bwipeout<cr>', 'Delete')
 
-local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
 local explore_quickfix = function()
   vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
 end
-local explore_locations = function()
-  vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and 'lclose' or 'lopen')
-end
 
--- nmap_leader('ed', '<Cmd>lua MiniFiles.open()<CR>', 'Directory')
-nmap_leader('ef', '<Cmd>Oil<CR>', 'File directory')
+nmap_leader('ef', function() Fyler.open({ kind = "split_left_most" }) end, 'Fyler')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
 nmap_leader('eq', explore_quickfix, 'Quickfix list')
-nmap_leader('eQ', explore_locations, 'Location list')
 nmap_leader('et', '<Cmd>NvimTreeOpen()<CR>', 'NerdTree')
 
 nmap_leader('fb', '<Cmd>FzfBuffers<CR>', 'Buffers')
@@ -104,7 +99,6 @@ nmap_leader('gl', '<Cmd>FzfGitCommits<CR>', 'Git Commits')
 nmap_leader('gs', '<Cmd>FzfGitStatus<CR>', 'Git Status')
 nmap_leader('gd', '<Cmd>FzfGitDiff<CR>', 'Diff')
 nmap_leader('gD', '<Cmd>Git diff<CR>', 'Diff')
--- nmap_leader('gD', '<Cmd>Git diff -- %<CR>', 'Diff buffer')
 nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
 
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
@@ -171,18 +165,18 @@ nmap_leader('rs', function() require('kulala').run() end, 'Send request')
 -- stylua: ignore end
 
 
-vim.keymap.set("i", "<Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
-end, { expr = true, noremap = true })
-
-vim.keymap.set("i", "<S-Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
-end, { expr = true, noremap = true })
-
--- Confirmar con Enter
-vim.keymap.set("i", "<CR>", function()
-  if vim.fn.pumvisible() == 1 then
-    return "<C-y>"
-  end
-  return "<CR>"
-end, { expr = true, noremap = true })
+-- vim.keymap.set("i", "<Tab>", function()
+--   return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+-- end, { expr = true, noremap = true })
+--
+-- vim.keymap.set("i", "<S-Tab>", function()
+--   return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+-- end, { expr = true, noremap = true })
+--
+-- -- Confirmar con Enter
+-- vim.keymap.set("i", "<CR>", function()
+--   if vim.fn.pumvisible() == 1 then
+--     return "<C-y>"
+--   end
+--   return "<CR>"
+-- end, { expr = true, noremap = true })

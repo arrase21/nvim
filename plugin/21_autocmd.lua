@@ -1,9 +1,9 @@
 -- 2. Yank Highlight (Limpio)
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = "Highlight text on yank",
+  desc = 'Highlight text on yank',
   group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
   callback = function()
-    vim.highlight.on_yank({
+    vim.hl.hl_op({
       higroup = 'IncSearch',
       timeout = 180,
     })

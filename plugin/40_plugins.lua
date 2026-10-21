@@ -1,6 +1,7 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local now_if_args = vim.fn.argc(-1) > 0 and now or later
 
+--Treesitter
 now_if_args(function()
   add("romus204/tree-sitter-manager.nvim")
   require("tree-sitter-manager").setup({
@@ -8,105 +9,7 @@ now_if_args(function()
   })
 end)
 
-later(function()
-  add("rebelot/kanagawa.nvim")
-  require('kanagawa').setup({
-    -- transparent = true,
-    compile = false,
-    colors = {
-      palette = {},
-      theme = {
-        all = {
-          ui = {
-            float = {
-              bg = "none",
-            },
-            bg_gutter = "none",
-          }
-        }
-      }
-    },
-  })
-  -- vim.cmd("colorscheme kanagawa-wave")
-end)
 now(function()
-  add("arrase21/gruvbox")
-  vim.g.gruvbox_contrast_dark = "hard"
-  vim.o.background = "dark"
-  -- vim.cmd('colorscheme gruvbox')
-end)
---Dracula
-now_if_args(function()
-  add("arrase21/dracula.nvim")
-  require("dracula").setup({
-    -- transparent_bg = true
-  })
-  vim.cmd('colorscheme dracula')
-end)
-later(function()
-  add("mistweaverco/kulala.nvim")
-  require("kulala").setup()
-  vim.api.nvim_set_hl(0, "MiniCursorword", { link = "Visual" })
-end)
---Treesitter
-later(function()
-  add("nvim-tree/nvim-tree.lua")
-  require("nvim-tree").setup({
-    diagnostics = {
-      enable = true,
-      icons = {
-        error = "",
-      }
-    },
-    actions = {
-      open_file = {
-        quit_on_open = true,
-      },
-    },
-    renderer = {
-      icons = {
-        show = {
-          hidden = true
-        },
-        git_placement = "after",
-        symlink_arrow = " -> ",
-        glyphs = {
-          folder = {
-            arrow_closed = " ",
-            arrow_open = " ",
-            default = "",
-            open = "",
-            empty = "",
-            empty_open = "",
-            symlink = "",
-            symlink_open = ""
-          },
-          default = "󱓻",
-          symlink = "󱓻",
-          bookmark = "",
-          modified = "",
-          hidden = "󱙝",
-          git = {
-            unstaged = "×",
-            staged = "",
-            unmerged = "󰧾",
-            untracked = "",
-            renamed = "",
-            deleted = "",
-            ignored = "∅"
-          }
-        }
-      }
-    },
-    filters = {
-      git_ignored = false
-    },
-    hijack_cursor = true,
-    sync_root_with_cwd = true
-  })
-end)
-
-later(function()
   add("arrase21/fzfnvim")
   require("fzf").setup({
     ui = {
@@ -124,7 +27,35 @@ later(function()
   })
 end)
 
--- Dap ==================================================================
+now(function()
+  add('arrase21/fyler.nvim')
+  require("fyler").setup({
+    integrations = {
+      icon = "mini_icons"
+    },
+    extensions = {
+      git = { enabled = true, inline = false },
+      trash = { enabled = true },
+      watcher = { enabled = true }
+    },
+    ui = {
+      hidden_items = {
+        always_visible = { ".git" },
+      }
+    },
+    kind_presets = {
+      split_left_most = {
+        mappings = {
+          n = {
+            ['<CR>'] = { action = 'select', args = { close = true, pick = false } },
+          },
+        },
+      },
+    },
+  })
+end)
+
+-- dap======================================================================
 later(function()
   add({
     source = 'mfussenegger/nvim-dap',
@@ -174,35 +105,41 @@ later(function()
   vim.fn.sign_define("DapStopped", { text = "→", texthl = "DapStopped" })
 end)
 
+later(function()
+  add("mistweaverco/kulala.nvim")
+  require("kulala").setup()
+  vim.api.nvim_set_hl(0, "MiniCursorword", { link = "Visual" })
+end)
+
 now(function()
   add({
-    source = "malewicz1337/oil-git.nvim",
-    depends = {"stevearc/oil.nvim"}
+    source = "saghen/blink.cmp",
+    depends = { "saghen/blink.lib" },
   })
-  require("oil").setup()
-  require("oil-git").setup({
-     symbols = {
-        file = { 
-          added = "",
-          modified = "",
-          renamed = "➔",
-          deleted = "",
-          unstaged = "",
-          copied = "",
-          conflict = "⚠",
-          untracked = "",
-          hidden = "󱙝",
-        },
-        directory = { 
-          added = "",
-          modified = "",
-          renamed = "",
-          deleted = "",
-          copied = "",
-          conflict = "",
-          untracked = "",
-          ignored = "◌"
+
+  require("blink.cmp").setup({
+    keymap = {
+      preset = "enter",
+      ["<Tab>"] = {
+        "select_next",
+        "snippet_forward",
+        "fallback",
+      },
+    },
+    completion = {
+      list = {
+        selection = {
+          preselect = true,
+          auto_insert = false,
         },
       },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 50,
+      },
+    },
+    sources = {
+      default = { "lsp", "path", "buffer" },
+    },
   })
 end)
