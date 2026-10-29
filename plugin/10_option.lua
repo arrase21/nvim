@@ -16,8 +16,9 @@ vim.o.list            = false
 vim.o.number          = true
 vim.o.relativenumber  = true
 vim.o.cursorline      = true
+vim.o.pumborder       = 'single'            -- Use border in popup menu
 vim.o.cursorlineopt   = 'screenline,number'
-vim.o.signcolumn      = 'number'
+vim.o.signcolumn      = 'yes'
 vim.o.laststatus      = 3
 
 -- Folds

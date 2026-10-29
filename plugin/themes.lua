@@ -22,17 +22,19 @@ later(function()
   })
   -- vim.cmd("colorscheme kanagawa-wave")
 end)
+
 now(function()
   add("arrase21/gruvbox")
   vim.g.gruvbox_contrast_dark = "hard"
   vim.o.background = "dark"
   vim.cmd('colorscheme gruvbox')
+  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
 end)
 --Dracula
 now_if_args(function()
   add("arrase21/dracula.nvim")
   require("dracula").setup({
-    -- transparent_bg = true
+    transparent_bg = true
   })
   -- vim.cmd('colorscheme dracula')
 end)

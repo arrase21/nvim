@@ -1,6 +1,15 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 add({ name = 'mini.nvim', checkout = 'HEAD' })
 
+now(function() require('mini.notify').setup() end)
+now(function() require('mini.cursorword').setup() end)
+now(function() require('mini.input').setup() end)
+
+later(function() require('mini.git').setup() end)
+later(function() require('mini.indentscope').setup() end)
+later(function() require('mini.pairs').setup() end)
+later(function() require('mini.surround').setup() end)
+
 now(function()
   require('mini.icons').setup({
     filetype = { go = { glyph = "" } },
@@ -9,8 +18,11 @@ now(function()
   later(MiniIcons.tweak_lsp_kind)
 end)
 
-now(function() require('mini.notify').setup() end)
-now(function() require('mini.cursorword').setup() end)
+now(function()
+  require('mini.misc').setup()
+  MiniMisc.setup_auto_root()
+  MiniMisc.setup_restore_cursor()
+end)
 
 -- now(function()
 --   local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
@@ -34,22 +46,6 @@ later(function()
     }
   })
 end)
-later(function() require('mini.git').setup() end)
-later(function() require('mini.indentscope').setup() end)
-later(function() require('mini.pairs').setup() end)
-later(function() require('mini.surround').setup() end)
-
-now(function()
-  require('mini.files').setup({
-    windows = {
-      preview = true
-    },
-    mappings = {
-      go_in_plus = "<CR>",
-      synchronize = "<Leader>w",
-    },
-  })
-end)
 
 now(function()
   local miniclue = require('mini.clue')
@@ -59,12 +55,10 @@ now(function()
     },
     clues = {
       Config.leader_group_clues,
-      miniclue.gen_clues.g(),
       miniclue.gen_clues.registers(),
     },
     triggers = {
       { mode = 'n', keys = '<Leader>' }, -- Leader triggers
-      { mode = 'n', keys = 'g' },        -- `g` key
     },
   })
 end)
@@ -152,29 +146,3 @@ now(function()
     },
   })
 end)
-
-
-require("mini.starter").setup({
-  autoopen = true,
-  items = {
-    { name = "Quit Neovim", action = "qa",                                         section = "", },
-    { name = "Old Files",   action = function() require("fzf").oldfiles() end,     section = "" },
-    { name = "Sessions",    action = function() require("fzf").session_load() end, section = "" },
-    { name = "Find Files",  action = function() require("fzf").files() end,        section = "" },
-    { name = "Rip Grep",    action = function() require("fzf").grep() end,         section = "" },
-  },
-  header = function()
-    local image = [[
-   ┌────────────────────────┐
-   │                        │
-   │   ▞▀▖▛▀▖▛▀▖▞▀▖▞▀▖▛▀▘   │
-   │   ▙▄▌▙▄▘▙▄▘▙▄▌▚▄ ▙▄    │
-   │   ▌ ▌▌▚ ▌▚ ▌ ▌▖ ▌▌     │
-   │   ▘ ▘▘ ▘▘ ▘▘ ▘▝▀ ▀▀    │
-   └────────────────────────┘
-   ]]
-    return image
-  end,
-  footer = "",
-  query_updater = false,
-})

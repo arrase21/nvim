@@ -104,7 +104,6 @@ nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
 nmap_leader('ld', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Next Diagnostic')
 nmap_leader('lD', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Prev Diagnostic')
-nmap_leader('lf', '<Cmd>lua require("conform").format()<CR>', 'Format')
 nmap_leader('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation')
 nmap_leader('lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', 'Hover')
 nmap_leader('ll', '<Cmd>lua vim.lsp.codelens.run()<CR>', 'Lens')
@@ -160,19 +159,19 @@ map("n", "<C-A-k>", "<cmd>resize +2<cr>", "Increase Window Height")
 map("n", "<C-A-j>", "<cmd>resize -2<cr>", "Decrease Window Height")
 map("n", "<C-A-L>", "<cmd>vertical resize -2<cr>", "Decrease Window Width")
 map("n", "<C-A-h>", "<cmd>vertical resize +2<cr>", "Increase Window Width")
-
+map("n", "<F5>", "<CMD>vsplit | terminal go run main.go<cr>", "Compile")
 nmap_leader('rs', function() require('kulala').run() end, 'Send request')
 -- stylua: ignore end
 
 
--- vim.keymap.set("i", "<Tab>", function()
---   return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
--- end, { expr = true, noremap = true })
---
--- vim.keymap.set("i", "<S-Tab>", function()
---   return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
--- end, { expr = true, noremap = true })
---
+vim.keymap.set("i", "<Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+end, { expr = true, noremap = true })
+
+vim.keymap.set("i", "<S-Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+end, { expr = true, noremap = true })
+
 -- -- Confirmar con Enter
 -- vim.keymap.set("i", "<CR>", function()
 --   if vim.fn.pumvisible() == 1 then

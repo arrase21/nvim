@@ -13,16 +13,17 @@ now(function()
   add("arrase21/fzfnvim")
   require("fzf").setup({
     ui = {
-      layout = "horizontal", -- vertical, fullscreen, center, horizontal
-      horizontal = {
-        width = 1.0,
-        height = 0.50,
-        border = "rounded",
-      },
-      -- preview = {
-      --   position = "top",         -- "right" | "left" | "top" | "bottom"
-      --   border = "border-bottom", -- estilo borde del preview
+      layout = "vertical", -- vertical, fullscreen, center, horizontal
+      -- vertical = {
+      --   width = 0.85,
+      --   height = 0.65,
+      --   border = "rounded",
       -- },
+      preview = {
+        position = "top",         -- "right" | "left" | "top" | "bottom"
+        size = "70",
+        border = "border-bottom", -- estilo borde del preview
+      },
     },
   })
 end)
@@ -112,34 +113,8 @@ later(function()
 end)
 
 now(function()
-  add({
-    source = "saghen/blink.cmp",
-    depends = { "saghen/blink.lib" },
-  })
-
+  add("saghen/blink.cmp")
   require("blink.cmp").setup({
-    keymap = {
-      preset = "enter",
-      ["<Tab>"] = {
-        "select_next",
-        "snippet_forward",
-        "fallback",
-      },
-    },
-    completion = {
-      list = {
-        selection = {
-          preselect = true,
-          auto_insert = false,
-        },
-      },
-      documentation = {
-        auto_show = true,
-        auto_show_delay_ms = 50,
-      },
-    },
-    sources = {
-      default = { "lsp", "path", "buffer" },
-    },
+    fuzzy = { implementation = 'lua' }
   })
 end)
