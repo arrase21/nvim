@@ -1,81 +1,92 @@
 local function lazygit()
-  local w, h = math.floor(vim.o.columns * 0.9), math.floor(vim.o.lines * 0.9)
-  local buf  = vim.api.nvim_create_buf(false, true)
-  local win  = vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    style = "minimal",
-    border = "rounded",
-    width = w,
-    height = h,
-    col = math.floor((vim.o.columns - w) / 2),
-    row = math.floor((vim.o.lines - h) / 2),
-  })
-  local function close()
-    if vim.api.nvim_win_is_valid(win) then
-      vim.api.nvim_win_close(win, true)
-    end
-  end
-  vim.fn.termopen("lazygit", { on_exit = close })
-  vim.keymap.set("n", "q", close, { buffer = buf })
-  vim.cmd.startinsert()
+   local w, h = math.floor(vim.o.columns * 0.9), math.floor(vim.o.lines * 0.9)
+   local buf  = vim.api.nvim_create_buf(false, true)
+   local win  = vim.api.nvim_open_win(buf, true, {
+      relative = "editor",
+      style = "minimal",
+      border = "rounded",
+      width = w,
+      height = h,
+      col = math.floor((vim.o.columns - w) / 2),
+      row = math.floor((vim.o.lines - h) / 2),
+   })
+   local function close()
+      if vim.api.nvim_win_is_valid(win) then
+         vim.api.nvim_win_close(win, true)
+      end
+   end
+   vim.fn.termopen("lazygit", { on_exit = close })
+   vim.keymap.set("n", "q", close, { buffer = buf })
+   vim.cmd.startinsert()
 end
 
 local function inlay_hint()
-  local buf = vim.api.nvim_get_current_buf()
-  local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = buf })
-  vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = buf })
-  vim.notify(
-    not is_enabled and "Inlay hints: ON" or "Inlay hints: OFF",
-    vim.log.levels.INFO
-  )
+   local buf = vim.api.nvim_get_current_buf()
+   local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = buf })
+   vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = buf })
+   vim.notify(
+      not is_enabled and "Inlay hints: ON" or "Inlay hints: OFF",
+      vim.log.levels.INFO
+   )
 end
 
--- ┌─────────────────┐
--- │ Custom mappings │
--- └─────────────────┘
-local nmap = function(lhs, rhs, desc)
-  vim.keymap.set('n', lhs, rhs, { desc = desc })
+local function pack_clean()
+   local active_plugins = {}
+   local unused_plugins = {}
+   for _, plugin in ipairs(vim.pack.get()) do
+      active_plugins[plugin.spec.name] = plugin.active
+   end
+   for _, plugin in ipairs(vim.pack.get()) do
+      if not active_plugins[plugin.spec.name] then
+         table.insert(unused_plugins, plugin.spec.name)
+      end
+   end
+   if #unused_plugins == 0 then
+      print("No unused plugins.")
+      return
+   end
+   local choice = vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2)
+   if choice == 1 then
+      vim.pack.del(unused_plugins)
+   end
 end
-
-nmap('K', vim.lsp.buf.hover, 'Hover documentation')
-nmap('[p', '<Cmd>exe "iput! " . v:register<CR>', 'Paste Above')
-nmap(']p', '<Cmd>exe "iput "  . v:register<CR>', 'Paste Below')
 
 -- Leader mappings ============================================================
 Config.leader_group_clues = {
-  { mode = 'n', keys = '<Leader>b', desc = '󰓩  Buffers' },
-  { mode = 'n', keys = '<Leader>d', desc = '  Debug' },
-  { mode = 'n', keys = '<Leader>f', desc = '󰱼 Find' },
-  { mode = 'n', keys = '<Leader>e', desc = ' Explore/Edit' },
-  { mode = 'n', keys = '<Leader>g', desc = '󰘬 Git' },
-  { mode = 'n', keys = '<Leader>h', desc = '󰚩 Harpoon' },
-  { mode = 'n', keys = '<Leader>r', desc = '󰗼  kulala/rest' },
-  { mode = 'n', keys = '<Leader>l', desc = ' Language' },
-  { mode = 'n', keys = '<Leader>o', desc = '󰚩 Other' },
-  { mode = 'n', keys = '<Leader>q', desc = '󰗼  Quit/Session' },
-  { mode = 'n', keys = '<Leader>s', desc = '+Session' },
-  { mode = 'x', keys = '<Leader>g', desc = '+Git' },
-  { mode = 'x', keys = '<Leader>l', desc = '+Language' },
+   { mode = 'n', keys = '<Leader>b', desc = '󰓩  Buffers' },
+   { mode = 'n', keys = '<Leader>d', desc = '  Debug' },
+   { mode = 'n', keys = '<Leader>f', desc = '󰱼 Find' },
+   { mode = 'n', keys = '<Leader>e', desc = ' Explore/Edit' },
+   { mode = 'n', keys = '<Leader>g', desc = '󰘬 Git' },
+   { mode = 'n', keys = '<Leader>h', desc = '󰚩 Harpoon' },
+   { mode = 'n', keys = '<Leader>r', desc = '󰗼  kulala/rest' },
+   { mode = 'n', keys = '<Leader>l', desc = ' Language' },
+   { mode = 'n', keys = '<Leader>o', desc = '󰚩 Other' },
+   { mode = 'n', keys = '<Leader>q', desc = '󰗼  Quit/Session' },
+   { mode = 'n', keys = '<Leader>s', desc = '+Session' },
+   { mode = 'x', keys = '<Leader>g', desc = '+Git' },
+   { mode = 'x', keys = '<Leader>l', desc = '+Language' },
 }
 
 local map = function(mode, lhs, rhs, desc)
-  vim.keymap.set(mode, lhs, rhs, { desc = desc, silent = true })
+   vim.keymap.set(mode, lhs, rhs, { desc = desc, silent = true })
 end
 local nmap_leader = function(suffix, rhs, desc) map('n', '<Leader>' .. suffix, rhs, desc) end
 local xmap_leader = function(suffix, rhs, desc)
-  vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
+   vim.keymap.set('x', '<Leader>' .. suffix, rhs, { desc = desc })
 end
 nmap_leader('bd', '<cmd>bwipeout<cr>', 'Delete')
 
 local explore_quickfix = function()
-  vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
+   vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
 end
-
+-- Fyler
 nmap_leader('ef', function() Fyler.open({ kind = "split_left_most" }) end, 'Fyler')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
 nmap_leader('eq', explore_quickfix, 'Quickfix list')
 nmap_leader('et', '<Cmd>NvimTreeOpen()<CR>', 'NerdTree')
 
+-- Fzf
 nmap_leader('fb', '<Cmd>FzfBuffers<CR>', 'Buffers')
 nmap_leader('fd', '<Cmd>FzfLspDiagnostics<CR>', 'Diagnostics')
 nmap_leader('fD', '<Cmd>FzfLspDefinitions<CR>', 'Definitions')
@@ -86,21 +97,22 @@ nmap_leader('fG', '<Cmd>FzfGrepW<CR>', 'Grep current word')
 nmap_leader('fr', '<Cmd>FzfLspReferences<CR>', 'References (LSP)')
 nmap_leader('fs', '<Cmd>FzfLspSymbols<CR>', 'Symbols')
 
-nmap_leader('gg', lazygit, 'Lazygit')
-nmap_leader('gC', '<Cmd>Git commit --amend<CR>', 'Commit amend')
-
+-- Git
 local git_log_cmd = [[Git log --pretty=format:\%h\ \%as\ │\ \%s --topo-order]]
 local git_log_buf_cmd = git_log_cmd .. ' --follow -- %'
 nmap_leader('ga', '<Cmd>Git diff --cached<CR>', 'Added diff')
 nmap_leader('gc', '<Cmd>Git commit<CR>', 'Commit')
+nmap_leader('gC', '<Cmd>Git commit --amend<CR>', 'Commit amend')
 nmap_leader('gA', '<Cmd>Git diff --cached -- %<CR>', 'Added diff buffer')
 nmap_leader('gb', '<Cmd>FzfGitBranches<CR>', 'Git Branch')
+nmap_leader('gg', lazygit, 'Lazygit')
 nmap_leader('gl', '<Cmd>FzfGitCommits<CR>', 'Git Commits')
 nmap_leader('gs', '<Cmd>FzfGitStatus<CR>', 'Git Status')
 nmap_leader('gd', '<Cmd>FzfGitDiff<CR>', 'Diff')
 nmap_leader('gD', '<Cmd>Git diff<CR>', 'Diff')
 nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
 
+-- Lsp
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
 nmap_leader('ld', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Next Diagnostic')
 nmap_leader('lD', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Prev Diagnostic')
@@ -116,9 +128,9 @@ xmap_leader('lf', '<Cmd>lua require("conform").format()<CR>', 'Format selection'
 -- o is for 'Other'. Common usage:
 nmap_leader("oa", "gg<S-v>G", 'select all')
 nmap_leader('oh', inlay_hint, 'Inlay')
+nmap_leader('op', pack_clean, 'Clean')
 nmap_leader('or', '<Cmd>lua MiniMisc.resize_window()<CR>', 'Resize to default width')
 nmap_leader("os", ":split<Return>", 'split')
-nmap_leader('ot', '<Cmd>lua MiniTrailspace.trim()<CR>', 'Trim trailspace')
 nmap_leader("ov", ":vsplit<Return>", 'split vertical')
 nmap_leader("oy", "mzyyp`zj", "copy/paste")
 nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>', 'Zoom toggle')
@@ -133,6 +145,15 @@ nmap_leader('hd', '<Cmd>FzfHarpoonRemove<CR>', 'Delete')
 
 -- 4. Globales ================================================================
 -- Navegación entre ventanas
+local fzf = require("fzf-lua")
+map("n", "ff", fzf.files, "FZF Files")
+map("n", "gm", fzf.marks, "FZF Marks")
+map("n", "da", fzf.diagnostics_workspace, "FZF Diagnostics")
+map("n", "ds", function() fzf.diagnostics_workspace({ severity_only = 1 }) end, "FZF Diagnostics (errors)")
+map("n", "fo", fzf.oldfiles, "FZF Old files")
+
+map("n", "gr", fzf.lsp_references, "FZF References")
+
 map('n', '<C-h>', '<C-w>h', 'Window Left')
 map('n', '<C-j>', '<C-w>j', 'Window Down')
 map('n', '<C-k>', '<C-w>k', 'Window Up')
@@ -161,21 +182,6 @@ map("n", "<C-A-L>", "<cmd>vertical resize -2<cr>", "Decrease Window Width")
 map("n", "<C-A-h>", "<cmd>vertical resize +2<cr>", "Increase Window Width")
 map("n", "<F5>", "<CMD>vsplit | terminal go run main.go<cr>", "Compile")
 nmap_leader('rs', function() require('kulala').run() end, 'Send request')
+
+map("n", "K", vim.lsp.buf.hover, 'Hover documentation')
 -- stylua: ignore end
-
-
-vim.keymap.set("i", "<Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
-end, { expr = true, noremap = true })
-
-vim.keymap.set("i", "<S-Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
-end, { expr = true, noremap = true })
-
--- -- Confirmar con Enter
--- vim.keymap.set("i", "<CR>", function()
---   if vim.fn.pumvisible() == 1 then
---     return "<C-y>"
---   end
---   return "<CR>"
--- end, { expr = true, noremap = true })
