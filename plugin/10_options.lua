@@ -50,35 +50,40 @@ vim.o.showmode        = false
 
 -- Diagnostics ================================================================
 local diagnostic_opts = {
+   severity_sort = true,
+
    signs = {
       text = {
          [vim.diagnostic.severity.ERROR] = "",
-         [vim.diagnostic.severity.WARN]  = " ",
-         [vim.diagnostic.severity.HINT]  = "󰌵 ",
-         [vim.diagnostic.severity.INFO]  = " ",
-
-      },
-      linehl = {
-         [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-      },
-      numhl = {
-         [vim.diagnostic.severity.WARN] = "WarningMsg",
+         [vim.diagnostic.severity.WARN]  = "",
+         [vim.diagnostic.severity.HINT]  = "󰌵",
+         [vim.diagnostic.severity.INFO]  = "",
       },
    },
+
    float = {
       source = "always",
       header = "",
       focusable = false,
+      severity_sort = true,
    },
-   -- virtual_text = true,
+
    virtual_text = {
-      current_line = true,
       spacing = 2,
       prefix = "",
       source = false,
+      severity_sort = true,
    },
-   current_line = true,
-   underline = { severity = { min = 'HINT', max = 'ERROR' } },
+
+   underline = {
+      severity = {
+         min = vim.diagnostic.severity.HINT,
+         max = vim.diagnostic.severity.ERROR,
+      },
+   },
+
    update_in_insert = false,
 }
+
+vim.diagnostic.config(diagnostic_opts)
 Config.later(function() vim.diagnostic.config(diagnostic_opts) end)

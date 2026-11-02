@@ -4,22 +4,22 @@
 local lsp_files = vim.api.nvim_get_runtime_file('lsp/*.lua', true)
 local configs = {}
 for _, path in ipairs(lsp_files) do
-  table.insert(configs, vim.fn.fnamemodify(path, ':t:r'))
+   table.insert(configs, vim.fn.fnamemodify(path, ':t:r'))
 end
 if #configs > 0 then
-  vim.lsp.enable(configs)
+   vim.lsp.enable(configs)
 end
 
 _G.Config = {}
 
 Config.on_packchanged = function(plugin_name, kinds, callback, desc)
-  local f = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if not (name == plugin_name and vim.tbl_contains(kinds, kind)) then return end
-    if not ev.data.active then vim.cmd.packadd(plugin_name) end
-    callback(ev.data)
-  end
-  Config.new_autocmd('PackChanged', '*', f, desc)
+   local f = function(ev)
+      local name, kind = ev.data.spec.name, ev.data.kind
+      if not (name == plugin_name and vim.tbl_contains(kinds, kind)) then return end
+      if not ev.data.active then vim.cmd.packadd(plugin_name) end
+      callback(ev.data)
+   end
+   Config.new_autocmd('PackChanged', '*', f, desc)
 end
 
 vim.pack.add({ 'https://github.com/nvim-mini/mini.nvim' })

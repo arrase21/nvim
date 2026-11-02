@@ -36,6 +36,8 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-   require("base46").setup()
-   -- vim.cmd.colorscheme("base46-gruvbox")
+   require("base46").setup({
+      transparency = true
+   })
+   vim.cmd.colorscheme("base46-gruvbox")
 end)

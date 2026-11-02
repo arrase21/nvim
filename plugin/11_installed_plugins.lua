@@ -11,7 +11,6 @@ vim.pack.add({
    -- Picker/Explorer
    gh("arrase21/fzfnvim"),
    gh('arrase21/fyler.nvim'),
-   gh('ibhagwan/fzf-lua'),
    -- Dap
    gh("mfussenegger/nvim-dap"),
    gh("rcarriga/nvim-dap-ui"),

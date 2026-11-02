@@ -1,32 +1,38 @@
+local format_group = vim.api.nvim_create_augroup("LspFormat", {
+   clear = true,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
+   group = format_group,
    desc = "LSP format on save",
    callback = function(event)
       local client = vim.lsp.get_client_by_id(event.data.client_id)
-      if not client then
+      if not client or not client:supports_method("textDocument/formatting") then
          return
       end
-      if not client:supports_method("textDocument/formatting") then
+      local buf = event.buf
+      if vim.b[buf].lsp_format_autocmd then
          return
       end
-      vim.api.nvim_clear_autocmds({
+      vim.b[buf].lsp_format_autocmd = vim.api.nvim_create_autocmd("BufWritePre", {
          group = format_group,
-         buffer = event.buf,
-      })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-         group = format_group,
-         buffer = event.buf,
+         buffer = buf,
+         desc = "Format buffer with LSP",
          callback = function()
             vim.lsp.buf.format({
-               bufnr = event.buf,
+               bufnr = buf,
                async = false,
                timeout_ms = 800,
+               filter = function(format_client)
+                  return format_client.id == client.id
+               end,
             })
          end,
       })
    end,
 })
--- No comments
 
+-- No comments
 vim.api.nvim_create_autocmd("FileType", {
    group = vim.api.nvim_create_augroup("no_auto_comment", {}),
    callback = function()
@@ -46,4 +52,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
          end)
       end
    end,
+})
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+   pattern = "*",
+   callback = function()
+      vim.hl.hl_op({ timeout = 170 })
+   end,
+   group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
 })

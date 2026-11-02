@@ -101,7 +101,6 @@ later(function()
 end)
 
 
-
 now_if_args(function()
    require("blink.cmp").setup({
       fuzzy = { implementation = 'prefer_rust' },
@@ -119,31 +118,16 @@ now_if_args(function()
          },
       },
       completion = {
-         list = {
-            selection = {
-               preselect = true,
-               auto_insert = false,
+         list = { selection = { preselect = true, auto_insert = false, }, },
+         documentation = { auto_show = true, auto_show_delay_ms = 50, },
+         menu = {
+            draw = {
+               columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
             },
-         },
-         documentation = {
-            auto_show = true,
-            auto_show_delay_ms = 50,
-         },
+         }
       },
       sources = {
-         default = { "lsp", "path", "snippets", "buffer" },
-      },
-   })
-end)
-
-now_if_args(function()
-   require("fzf-lua").setup({
-      winopts = {
-         fullscreen = false,
-         preview = {
-            layout = "vertical",
-            vertical = "up:50%",
-         },
+         default = { 'lsp', 'snippets', 'buffer', 'path' },
       },
    })
 end)

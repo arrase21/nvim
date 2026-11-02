@@ -145,15 +145,6 @@ nmap_leader('hd', '<Cmd>FzfHarpoonRemove<CR>', 'Delete')
 
 -- 4. Globales ================================================================
 -- Navegación entre ventanas
-local fzf = require("fzf-lua")
-map("n", "ff", fzf.files, "FZF Files")
-map("n", "gm", fzf.marks, "FZF Marks")
-map("n", "da", fzf.diagnostics_workspace, "FZF Diagnostics")
-map("n", "ds", function() fzf.diagnostics_workspace({ severity_only = 1 }) end, "FZF Diagnostics (errors)")
-map("n", "fo", fzf.oldfiles, "FZF Old files")
-
-map("n", "gr", fzf.lsp_references, "FZF References")
-
 map('n', '<C-h>', '<C-w>h', 'Window Left')
 map('n', '<C-j>', '<C-w>j', 'Window Down')
 map('n', '<C-k>', '<C-w>k', 'Window Up')
