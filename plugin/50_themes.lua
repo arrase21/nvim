@@ -30,7 +30,7 @@ end)
 
 now_if_args(function()
    require("dracula").setup({
-      -- transparent_bg = true
+      transparent_bg = true
    })
    -- vim.cmd('colorscheme dracula')
 end)
@@ -39,5 +39,12 @@ now_if_args(function()
    require("base46").setup({
       transparency = true
    })
-   vim.cmd.colorscheme("base46-gruvbox")
+   -- vim.cmd.colorscheme("base46-gruvbox")
+end)
+
+now_if_args(function()
+   require("solarized-osaka").setup({
+      style = 'vivid',
+   })
+   vim.cmd.colorscheme("solarized-osaka")
 end)

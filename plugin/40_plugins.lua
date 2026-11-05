@@ -37,15 +37,13 @@ now_if_args(function()
          watcher = { enabled = true }
       },
       ui = {
-         hidden_items = {
-            always_visible = { ".git" },
-         }
+         hidden_items = { always_visible = { ".git" }, }
       },
       kind_presets = {
          split_left_most = {
             mappings = {
                n = {
-                  ['<CR>'] = { action = 'select', args = { close = true, pick = false } },
+                  ['<CR>'] = { action = 'select', args = { close = true, pick = true } },
                },
             },
          },
@@ -124,7 +122,10 @@ now_if_args(function()
             draw = {
                columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'source_name' } },
             },
-         }
+         },
+         ghost_text = {
+            enabled = true,
+         },
       },
       sources = {
          default = { 'lsp', 'snippets', 'buffer', 'path' },

@@ -6,6 +6,7 @@ vim.pack.add({
    gh("arrase21/dracula.nvim"),
    gh("arrase21/gruvbox"),
    gh("duxlabs-dev/base46"),
+   gh("craftzdog/solarized-osaka.nvim"),
    -- TreeSitter
    gh("romus204/tree-sitter-manager.nvim"),
    -- Picker/Explorer

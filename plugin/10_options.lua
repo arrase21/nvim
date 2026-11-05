@@ -50,8 +50,17 @@ vim.o.showmode        = false
 
 -- Diagnostics ================================================================
 local diagnostic_opts = {
+   underline = true,
+   update_in_insert = false,
+   virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "",
+      format = function(diagnostic)
+         return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+      end,
+   },
    severity_sort = true,
-
    signs = {
       text = {
          [vim.diagnostic.severity.ERROR] = "",
@@ -60,30 +69,6 @@ local diagnostic_opts = {
          [vim.diagnostic.severity.INFO]  = "",
       },
    },
-
-   float = {
-      source = "always",
-      header = "",
-      focusable = false,
-      severity_sort = true,
-   },
-
-   virtual_text = {
-      spacing = 2,
-      prefix = "",
-      source = false,
-      severity_sort = true,
-   },
-
-   underline = {
-      severity = {
-         min = vim.diagnostic.severity.HINT,
-         max = vim.diagnostic.severity.ERROR,
-      },
-   },
-
-   update_in_insert = false,
 }
 
-vim.diagnostic.config(diagnostic_opts)
 Config.later(function() vim.diagnostic.config(diagnostic_opts) end)

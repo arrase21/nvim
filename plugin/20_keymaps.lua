@@ -77,13 +77,10 @@ local xmap_leader = function(suffix, rhs, desc)
 end
 nmap_leader('bd', '<cmd>bwipeout<cr>', 'Delete')
 
-local explore_quickfix = function()
-   vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
-end
 -- Fyler
 nmap_leader('ef', function() Fyler.open({ kind = "split_left_most" }) end, 'Fyler')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
-nmap_leader('eq', explore_quickfix, 'Quickfix list')
+nmap_leader('eq', '<CMD>lua vim.diagnostic.setqflist()<CR>', 'Quickfix list')
 nmap_leader('et', '<Cmd>NvimTreeOpen()<CR>', 'NerdTree')
 
 -- Fzf
@@ -114,8 +111,9 @@ nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
 
 -- Lsp
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
-nmap_leader('ld', function() vim.diagnostic.jump({ count = 1, float = true }) end, 'Next Diagnostic')
-nmap_leader('lD', function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Prev Diagnostic')
+nmap_leader('lb', '<CMD>lua vim.diagnostic.open_float()<CR>', 'Next Diagnostic')
+nmap_leader('ld', function() vim.diagnostic.jump({ count = 1, jump = true }) end, 'Next Diagnostic')
+nmap_leader('lD', function() vim.diagnostic.jump({ count = -1, jump = true }) end, 'Prev Diagnostic')
 nmap_leader('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation')
 nmap_leader('lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', 'Hover')
 nmap_leader('ll', '<Cmd>lua vim.lsp.codelens.run()<CR>', 'Lens')
