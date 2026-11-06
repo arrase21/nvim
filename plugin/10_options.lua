@@ -17,7 +17,7 @@ vim.o.list          = false
 -- vim.o.relativenumber  = true
 vim.o.cursorline    = true
 -- vim.o.pumborder     = 'rounded' -- Use border in popup menu
--- vim.o.winborder     = 'rounded'
+vim.o.winborder     = 'rounded'
 vim.o.cursorlineopt = 'screenline,number'
 vim.o.signcolumn    = 'yes'
 
